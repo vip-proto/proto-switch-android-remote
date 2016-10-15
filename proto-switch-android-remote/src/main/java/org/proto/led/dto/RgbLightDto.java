@@ -30,11 +30,9 @@ package org.proto.led.dto;
 /**
  * Created by Predrag Milutinovic on 20.3.2016..
  */
-public class LedLightDto {
+public class RgbLightDto extends DimmableLightDto {
 
-    private ControllerDto controllerDto;
-    private String name;
-    private boolean on;
+
     private int redChannel;
     private int greenChannel;
     private int blueChannel;
@@ -42,26 +40,6 @@ public class LedLightDto {
     private int greenValue;
     private int blueValue;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-
-    public ControllerDto getControllerDto() {
-        return controllerDto;
-    }
-
-    public void setControllerDto(ControllerDto controllerDto) {
-        this.controllerDto = controllerDto;
-    }
 
     public int getRedChannel() {
         return redChannel;
@@ -111,11 +89,5 @@ public class LedLightDto {
         this.blueValue = blueValue;
     }
 
-    public boolean isOn() {
-        return on;
-    }
 
-    public void setOn(boolean on) {
-        this.on = on;
-    }
 }

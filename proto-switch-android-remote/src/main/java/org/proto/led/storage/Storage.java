@@ -29,7 +29,7 @@ package org.proto.led.storage;
 
 import android.content.Context;
 import org.proto.led.dto.ControllerDto;
-import org.proto.led.dto.LedLightDto;
+import org.proto.led.dto.RgbLightDto;
 
 import java.util.ArrayList;
 
@@ -39,48 +39,48 @@ import java.util.ArrayList;
 public class Storage {
 	public static ArrayList<ControllerDto> loadControllers(Context context) {
 		ArrayList<ControllerDto> controllerDtos = new ArrayList<ControllerDto>();
-		LedLightDto ledLightDto1 = new LedLightDto();
-		ledLightDto1.setName( "LED 1" );
-		ledLightDto1.setRedChannel(0);
-		ledLightDto1.setGreenChannel(1);
-		ledLightDto1.setBlueChannel(2);
-		LedLightDto ledLightDto2 = new LedLightDto();
-		ledLightDto2.setName("LED 2");
-		ledLightDto2.setRedChannel(3);
-		ledLightDto2.setGreenChannel(4);
-		ledLightDto2.setBlueChannel(5);
-		LedLightDto ledLightDto3 = new LedLightDto();
-		ledLightDto3.setName("LED 3");
-		ledLightDto3.setRedChannel(6);
-		ledLightDto3.setGreenChannel(7);
-		ledLightDto3.setBlueChannel(8);
+		RgbLightDto rgbLightDto1 = new RgbLightDto();
+		rgbLightDto1.setName( "LED 1" );
+		rgbLightDto1.setRedChannel(0);
+		rgbLightDto1.setGreenChannel(1);
+		rgbLightDto1.setBlueChannel(2);
+		RgbLightDto rgbLightDto2 = new RgbLightDto();
+		rgbLightDto2.setName("LED 2");
+		rgbLightDto2.setRedChannel(3);
+		rgbLightDto2.setGreenChannel(4);
+		rgbLightDto2.setBlueChannel(5);
+		RgbLightDto rgbLightDto3 = new RgbLightDto();
+		rgbLightDto3.setName("LED 3");
+		rgbLightDto3.setRedChannel(6);
+		rgbLightDto3.setGreenChannel(7);
+		rgbLightDto3.setBlueChannel(8);
 		ControllerDto controllerDto1 = new ControllerDto();
 		controllerDto1.setName( "MockedController1" );
-		controllerDto1.getLedLights().add( ledLightDto1 );
-		controllerDto1.getLedLights().add( ledLightDto2 );
+		controllerDto1.getLedLights().add( rgbLightDto1 );
+		controllerDto1.getLedLights().add( rgbLightDto2 );
 		controllerDtos.add( controllerDto1 );
 		ControllerDto controllerDto2 = new ControllerDto();
 		controllerDto2.setName( "MockedController2" );
-		controllerDto2.getLedLights().add( ledLightDto1 );
-		controllerDto2.getLedLights().add( ledLightDto2 );
-		controllerDto2.getLedLights().add( ledLightDto3 );
+		controllerDto2.getLedLights().add( rgbLightDto1 );
+		controllerDto2.getLedLights().add( rgbLightDto2 );
+		controllerDto2.getLedLights().add( rgbLightDto3 );
 		controllerDtos.add( controllerDto2 );
 		return controllerDtos;
 	}
 
-	public static ArrayList<LedLightDto> loadLights() {
-		ArrayList<LedLightDto> ledLightDtos = new ArrayList<LedLightDto>();
-		LedLightDto ledLightDto1 = new LedLightDto();
+	public static ArrayList<RgbLightDto> loadLights() {
+		ArrayList<RgbLightDto> ledLightDtos = new ArrayList<RgbLightDto>();
+		RgbLightDto ledLightDto1 = new RgbLightDto();
 		ledLightDto1.setName("LED 1");
 		ledLightDto1.setRedChannel(0);
 		ledLightDto1.setGreenChannel(1);
 		ledLightDto1.setBlueChannel(2);
-		LedLightDto ledLightDto2 = new LedLightDto();
+		RgbLightDto ledLightDto2 = new RgbLightDto();
 		ledLightDto2.setName("LED 2");
 		ledLightDto2.setRedChannel(3);
 		ledLightDto2.setGreenChannel(4);
 		ledLightDto2.setBlueChannel(5);
-		LedLightDto ledLightDto3 = new LedLightDto();
+		RgbLightDto ledLightDto3 = new RgbLightDto();
 		ledLightDto3.setName("LED 3");
 		ledLightDto3.setRedChannel(6);
 		ledLightDto3.setGreenChannel(7);
@@ -91,7 +91,7 @@ public class Storage {
 		return ledLightDtos;
 	}
 
-	public static void updateLights(LedLightDto... selectedLight) {
+	public static void updateLights(RgbLightDto... selectedLight) {
 
 	}
 }

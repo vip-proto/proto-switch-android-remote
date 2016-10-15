@@ -27,41 +27,50 @@
 
 package org.proto.led.dto;
 
-import java.util.ArrayList;
-
 /**
- * Created by Predrag Milutinovic on 19.3.2016..
+ * Created by Predrag on 15.10.2016..
  */
-public class ControllerDto {
-	private String                 name;
-	private ArrayList<RgbLightDto> ledLights = new ArrayList<RgbLightDto>(  );
-	private String ipAddress;
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
+public class LightDto {
+    private ControllerDto controllerDto;
+    private String name;
+    private boolean on;
+    private int channel;
 
-	@Override
-	public String toString() {
-		return name;
-	}
+    public ControllerDto getControllerDto() {
+        return controllerDto;
+    }
 
-	public ArrayList<RgbLightDto> getLedLights() {
-		return ledLights;
-	}
+    public void setControllerDto(ControllerDto controllerDto) {
+        this.controllerDto = controllerDto;
+    }
 
-	public void setLedLights(ArrayList<RgbLightDto> ledLights) {
-		this.ledLights = ledLights;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getIpAddress() {
-		return ipAddress;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setIpAddress(String ipAddress) {
-		this.ipAddress = ipAddress;
-	}
+    public boolean isOn() {
+        return on;
+    }
+
+    public void setOn(boolean on) {
+        this.on = on;
+    }
+
+    public int getChannel() {
+        return channel;
+    }
+
+    public void setChannel(int channel) {
+        this.channel = channel;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

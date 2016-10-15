@@ -36,20 +36,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
 
 import org.proto.led.dto.ControllerDto;
-import org.proto.led.dto.LedLightDto;
+import org.proto.led.dto.RgbLightDto;
 import org.proto.led.network.MakeUDPRequest;
 import org.proto.led.storage.Storage;
 
@@ -63,12 +60,12 @@ public class DirectControlActivityFragment extends Fragment implements ColorPick
     private Spinner selectControllerSpinner;
     private Spinner selectLightSpinner;
     private ArrayAdapter<ControllerDto> controllerArrayAdapter;
-    private ArrayAdapter<LedLightDto> lightArrayAdapter;
+    private ArrayAdapter<RgbLightDto> lightArrayAdapter;
     private TextView textView;
     private LinearLayout selectorHolder;
     private LinearLayout offHolder;
-    private LedLightDto selectedLight;
-    private String TAG = "DirectControlActivityFragment";
+    private RgbLightDto selectedLight;
+    private String TAG = "DirectControlActivityFr";
 
     public DirectControlActivityFragment() {
     }
@@ -188,14 +185,14 @@ public class DirectControlActivityFragment extends Fragment implements ColorPick
         allButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                turnOff(Storage.loadLights().toArray(new LedLightDto[]{}));
+                turnOff(Storage.loadLights().toArray(new RgbLightDto[]{}));
             }
         });
         allButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
         offHolder.addView(allButton);
 
-        ArrayList<LedLightDto> ledLightDtos = Storage.loadLights();
-        for (final LedLightDto light : ledLightDtos) {
+        ArrayList<RgbLightDto> ledLightDtos = Storage.loadLights();
+        for (final RgbLightDto light : ledLightDtos) {
             ImageButton lightButton = new ImageButton(getActivity());
 //            lightButton.setText("");
             lightButton.setImageResource(R.mipmap.off);
@@ -211,7 +208,7 @@ public class DirectControlActivityFragment extends Fragment implements ColorPick
         }
     }
 
-    private void turnOff(LedLightDto... ledLightDtos) {
+    private void turnOff(RgbLightDto... ledLightDtos) {
         updateColor(0, 0, 0, ledLightDtos);
     }
 
@@ -219,21 +216,21 @@ public class DirectControlActivityFragment extends Fragment implements ColorPick
         if (selectedLight != null) {
             updateColor(redInt, greenInt, blueInt, selectedLight);
         } else {
-            updateColor(redInt, greenInt, blueInt, Storage.loadLights().toArray(new LedLightDto[]{}));
+            updateColor(redInt, greenInt, blueInt, Storage.loadLights().toArray(new RgbLightDto[]{}));
         }
     }
 
 
-    private void updateColor(int redInt, int greenInt, int blueInt, LedLightDto... selectedLight) {
+    private void updateColor(int redInt, int greenInt, int blueInt, RgbLightDto... selectedLight) {
         for (int i = 0; i < selectedLight.length; i++) {
-            LedLightDto lightDto = selectedLight[i];
+            RgbLightDto lightDto = selectedLight[i];
             updateSingleLight(lightDto, redInt, greenInt, blueInt);
         }
         sendCommandToController(selectedLight);
         Storage.updateLights(selectedLight);
     }
 
-    private void sendCommandToController(LedLightDto... selectedLight) {
+    private void sendCommandToController(RgbLightDto... selectedLight) {
         // reset
         byte[] command = new byte[7];
         command[0] = (byte) 128;
@@ -243,7 +240,7 @@ public class DirectControlActivityFragment extends Fragment implements ColorPick
             command[i] = 64;
 
         }
-        for (LedLightDto ledDto : selectedLight) {
+        for (RgbLightDto ledDto : selectedLight) {
             command[ledDto.getRedChannel() + 1] = (byte) ledDto.getRedValue();
             command[ledDto.getGreenChannel() + 1] = (byte) ledDto.getGreenValue();
             command[ledDto.getBlueChannel() + 1] = (byte) ledDto.getBlueValue();
@@ -255,7 +252,7 @@ public class DirectControlActivityFragment extends Fragment implements ColorPick
     }
 
 
-    private void updateSingleLight(LedLightDto selectedLight, int redInt, int greenInt, int blueInt) {
+    private void updateSingleLight(RgbLightDto selectedLight, int redInt, int greenInt, int blueInt) {
         selectedLight.setRedValue(redInt);
         selectedLight.setGreenValue(greenInt);
         selectedLight.setBlueValue(blueInt);
@@ -286,8 +283,8 @@ public class DirectControlActivityFragment extends Fragment implements ColorPick
         allButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
         selectorHolder.addView(allButton);
 
-        ArrayList<LedLightDto> ledLightDtos = Storage.loadLights();
-        for (final LedLightDto light : ledLightDtos) {
+        ArrayList<RgbLightDto> ledLightDtos = Storage.loadLights();
+        for (final RgbLightDto light : ledLightDtos) {
             final ImageButton lightButton = new ImageButton(getActivity());
 //            lightButton.setText("");
 //            lightButton.setTextOff("");
