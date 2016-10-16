@@ -106,6 +106,13 @@ public class Storage {
 		ledLightDto5.setName("Trpezarija gore");
 		ledLightDto5.setIntensity(32);
 		ledLightDtos.add(ledLightDto5);
+		// -------
+		ledLightDtos.add(ledLightDto1);
+		ledLightDtos.add(ledLightDto2);
+		ledLightDtos.add(ledLightDto3);
+		ledLightDtos.add(ledLightDto4);
+		ledLightDtos.add(ledLightDto5);
+		ledLightDtos.add(ledLightDto5);
 
 		return ledLightDtos;
 	}

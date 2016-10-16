@@ -31,8 +31,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/abc_dialog_list_padding_vertical_material"
-    android:paddingBottom="@dimen/abc_dialog_list_padding_vertical_material">
+    android:paddingTop="@dimen/abc_control_padding_material"
+    android:paddingBottom="@dimen/abc_control_padding_material">
 
     <ToggleButton
         android:layout_width="0dp"
@@ -57,9 +57,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/light_line_color_button"
         android:layout_weight="1"
-        android:bottomRightRadius="10dp"
-        android:bottomLeftRadius="10dp"
-        android:topLeftRadius="10dp"
-        android:topRightRadius="10dp"/>
+        android:paddingBottom="@dimen/abc_control_padding_material"
+        android:paddingTop="@dimen/abc_dialog_list_padding_vertical_material"/>
 
 </LinearLayout>
