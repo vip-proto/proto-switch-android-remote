@@ -73,7 +73,7 @@ public class Storage {
 	public static ArrayList<LightDto> loadLights() {
 		ArrayList<LightDto> ledLightDtos = new ArrayList<LightDto>();
 		RgbLightDto ledLightDto1 = new RgbLightDto();
-		ledLightDto1.setName("RGB 1");
+		ledLightDto1.setName("Daska gore");
 		ledLightDto1.setRedChannel(0);
 		ledLightDto1.setGreenChannel(1);
 		ledLightDto1.setBlueChannel(2);
@@ -81,7 +81,7 @@ public class Storage {
 		ledLightDto1.setGreenValue(1);
 		ledLightDto1.setBlueValue(2);
 		RgbLightDto ledLightDto2 = new RgbLightDto();
-		ledLightDto2.setName("RGB 2");
+		ledLightDto2.setName("Daska dole");
 		ledLightDto2.setRedChannel(3);
 		ledLightDto2.setGreenChannel(4);
 		ledLightDto2.setBlueChannel(5);
@@ -89,7 +89,7 @@ public class Storage {
 		ledLightDto2.setGreenValue(40);
 		ledLightDto2.setBlueValue(5);
 		RgbLightDto ledLightDto3 = new RgbLightDto();
-		ledLightDto3.setName("RGB 3");
+		ledLightDto3.setName("Zavesa");
 		ledLightDto3.setRedChannel(6);
 		ledLightDto3.setGreenChannel(7);
 		ledLightDto3.setBlueChannel(8);
@@ -100,10 +100,10 @@ public class Storage {
 		ledLightDtos.add(ledLightDto2);
 		ledLightDtos.add(ledLightDto3);
 		LightDto ledLightDto4 = new LightDto();
-		ledLightDto4.setName("regular");
+		ledLightDto4.setName("Trpezarija 1");
 		ledLightDtos.add(ledLightDto4);
 		DimmableLightDto ledLightDto5 = new DimmableLightDto();
-		ledLightDto5.setName("dimmable");
+		ledLightDto5.setName("Trpezarija gore");
 		ledLightDto5.setIntensity(32);
 		ledLightDtos.add(ledLightDto5);
 

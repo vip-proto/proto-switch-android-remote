@@ -29,6 +29,7 @@ package org.proto.led.lightlist;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,8 +99,13 @@ public class LightsListAdapter extends BaseAdapter {
         }
         if(light instanceof RgbLightDto){
             RgbLightDto rgbLightDto = (RgbLightDto) light;
-            colorButton.setBackgroundColor(rgbLightDto.calculateColor());
             colorButton.setVisibility(View.VISIBLE);
+            colorButton.setBackgroundResource(R.drawable.tags_rounded_corners);
+
+            GradientDrawable drawable = (GradientDrawable) colorButton.getBackground();
+
+                drawable.setColor(rgbLightDto.calculateColor());
+
         } else {
             colorButton.setVisibility(View.INVISIBLE);
         }
