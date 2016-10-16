@@ -46,6 +46,7 @@ import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
 
 import org.proto.led.dto.ControllerDto;
+import org.proto.led.dto.LightDto;
 import org.proto.led.dto.RgbLightDto;
 import org.proto.led.network.MakeUDPRequest;
 import org.proto.led.storage.Storage;
@@ -191,20 +192,24 @@ public class DirectControlActivityFragment extends Fragment implements ColorPick
         allButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
         offHolder.addView(allButton);
 
-        ArrayList<RgbLightDto> ledLightDtos = Storage.loadLights();
-        for (final RgbLightDto light : ledLightDtos) {
-            ImageButton lightButton = new ImageButton(getActivity());
+        ArrayList<LightDto> ledLightDtos = Storage.loadLights();
+
+        for (final LightDto l : ledLightDtos) {
+            if(l instanceof RgbLightDto) {
+                final RgbLightDto light = (RgbLightDto) l;
+                ImageButton lightButton = new ImageButton(getActivity());
 //            lightButton.setText("");
-            lightButton.setImageResource(R.mipmap.off);
-            lightButton.setBackgroundColor(Color.TRANSPARENT);
-            lightButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    turnOff(light);
-                }
-            });
-            lightButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-            offHolder.addView(lightButton);
+                lightButton.setImageResource(R.mipmap.off);
+                lightButton.setBackgroundColor(Color.TRANSPARENT);
+                lightButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        turnOff(light);
+                    }
+                });
+                lightButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+                offHolder.addView(lightButton);
+            }
         }
     }
 
@@ -283,25 +288,28 @@ public class DirectControlActivityFragment extends Fragment implements ColorPick
         allButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
         selectorHolder.addView(allButton);
 
-        ArrayList<RgbLightDto> ledLightDtos = Storage.loadLights();
-        for (final RgbLightDto light : ledLightDtos) {
-            final ImageButton lightButton = new ImageButton(getActivity());
+        ArrayList<LightDto> ledLightDtos = Storage.loadLights();
+        for ( LightDto l : ledLightDtos) {
+            if(l instanceof RgbLightDto) {
+                final RgbLightDto light = (RgbLightDto) l;
+                final ImageButton lightButton = new ImageButton(getActivity());
 //            lightButton.setText("");
 //            lightButton.setTextOff("");
 //            lightButton.setTextOn("");
-            lightButton.setImageResource(R.drawable.toggle_selector);
-            lightButton.setBackgroundColor(Color.TRANSPARENT);
-            lightButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    lightButton.setSelected(true);
-                    unselectAllButtonsExcept(v);
-                    selectedLight = light;
+                lightButton.setImageResource(R.drawable.toggle_selector);
+                lightButton.setBackgroundColor(Color.TRANSPARENT);
+                lightButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        lightButton.setSelected(true);
+                        unselectAllButtonsExcept(v);
+                        selectedLight = light;
 
-                }
-            });
-            lightButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-            selectorHolder.addView(lightButton);
+                    }
+                });
+                lightButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+                selectorHolder.addView(lightButton);
+            }
         }
     }
 

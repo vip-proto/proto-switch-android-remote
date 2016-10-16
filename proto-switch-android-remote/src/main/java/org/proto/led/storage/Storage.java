@@ -29,6 +29,8 @@ package org.proto.led.storage;
 
 import android.content.Context;
 import org.proto.led.dto.ControllerDto;
+import org.proto.led.dto.DimmableLightDto;
+import org.proto.led.dto.LightDto;
 import org.proto.led.dto.RgbLightDto;
 
 import java.util.ArrayList;
@@ -68,26 +70,43 @@ public class Storage {
 		return controllerDtos;
 	}
 
-	public static ArrayList<RgbLightDto> loadLights() {
-		ArrayList<RgbLightDto> ledLightDtos = new ArrayList<RgbLightDto>();
+	public static ArrayList<LightDto> loadLights() {
+		ArrayList<LightDto> ledLightDtos = new ArrayList<LightDto>();
 		RgbLightDto ledLightDto1 = new RgbLightDto();
-		ledLightDto1.setName("LED 1");
+		ledLightDto1.setName("RGB 1");
 		ledLightDto1.setRedChannel(0);
 		ledLightDto1.setGreenChannel(1);
 		ledLightDto1.setBlueChannel(2);
+		ledLightDto1.setRedValue(50);
+		ledLightDto1.setGreenValue(1);
+		ledLightDto1.setBlueValue(2);
 		RgbLightDto ledLightDto2 = new RgbLightDto();
-		ledLightDto2.setName("LED 2");
+		ledLightDto2.setName("RGB 2");
 		ledLightDto2.setRedChannel(3);
 		ledLightDto2.setGreenChannel(4);
 		ledLightDto2.setBlueChannel(5);
+		ledLightDto2.setRedValue(3);
+		ledLightDto2.setGreenValue(40);
+		ledLightDto2.setBlueValue(5);
 		RgbLightDto ledLightDto3 = new RgbLightDto();
-		ledLightDto3.setName("LED 3");
+		ledLightDto3.setName("RGB 3");
 		ledLightDto3.setRedChannel(6);
 		ledLightDto3.setGreenChannel(7);
 		ledLightDto3.setBlueChannel(8);
+		ledLightDto3.setRedValue(6);
+		ledLightDto3.setGreenValue(7);
+		ledLightDto3.setBlueValue(30);
 		ledLightDtos.add(ledLightDto1);
 		ledLightDtos.add(ledLightDto2);
-//		ledLightDtos.add(ledLightDto3);
+		ledLightDtos.add(ledLightDto3);
+		LightDto ledLightDto4 = new LightDto();
+		ledLightDto4.setName("regular");
+		ledLightDtos.add(ledLightDto4);
+		DimmableLightDto ledLightDto5 = new DimmableLightDto();
+		ledLightDto5.setName("dimmable");
+		ledLightDto5.setIntensity(32);
+		ledLightDtos.add(ledLightDto5);
+
 		return ledLightDtos;
 	}
 

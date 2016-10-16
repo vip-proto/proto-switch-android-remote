@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /******************************************************************
   ~   This file is part of PROTO-SWITCH Light controller project.
   ~
@@ -24,10 +23,9 @@
   ~   The GNU General Public License is contained in the file COPYING.
   ~ */
   ~
-  -->
-
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.proto.led.controller" >
+    package="org.proto.led.controller">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -37,11 +35,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".DirectControllActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,9 +48,9 @@
         </activity>
         <activity
             android:name="org.proto.led.discovery.DiscoveryActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:label="@string/title_activity_discovery"
-            android:parentActivityName=".DirectControllActivity" >
+            android:parentActivityName=".DirectControllActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.proto.led.controller.DirectControllActivity" />
@@ -60,8 +58,9 @@
 
         <service
             android:name="org.proto.led.discovery.DiscoveryService"
-            android:exported="false" >
-        </service>
+            android:exported="false"></service>
+
+        <activity android:name="org.proto.led.lightlist.LightsListActivity"></activity>
     </application>
 
 </manifest>

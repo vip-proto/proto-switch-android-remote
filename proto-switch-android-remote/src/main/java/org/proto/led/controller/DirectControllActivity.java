@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import org.proto.led.discovery.DiscoveryActivity;
+import org.proto.led.lightlist.LightsListActivity;
 
 public class DirectControllActivity extends AppCompatActivity {
 
@@ -59,6 +60,11 @@ public class DirectControllActivity extends AppCompatActivity {
 		//noinspection SimplifiableIfStatement
 		if (id == R.id.action_discovery) {
 			Intent intent = new Intent( getApplicationContext(), DiscoveryActivity.class );
+			startActivity( intent );
+			return true;
+		}
+		if (id == R.id.action_lights) {
+			Intent intent = new Intent( getApplicationContext(), LightsListActivity.class );
 			startActivity( intent );
 			return true;
 		}

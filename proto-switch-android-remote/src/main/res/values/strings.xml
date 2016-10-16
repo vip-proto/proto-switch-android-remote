@@ -32,4 +32,5 @@
     <string name="title_activity_discovery">DiscoveryActivity</string>
     <string name="detecting_controllers">While you are on this screen app is discovering new controllers.\nDetected devices:</string>
     <string name="discovery_menu">Discovery</string>
+    <string name="lights_menu">Lights</string>
 </resources>

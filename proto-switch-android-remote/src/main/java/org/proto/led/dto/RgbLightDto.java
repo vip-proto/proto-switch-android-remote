@@ -27,6 +27,8 @@
 
 package org.proto.led.dto;
 
+import android.graphics.Color;
+
 /**
  * Created by Predrag Milutinovic on 20.3.2016..
  */
@@ -90,4 +92,7 @@ public class RgbLightDto extends DimmableLightDto {
     }
 
 
+    public int calculateColor() {
+        return Color.rgb(redValue*4, greenValue*4, blueValue*4);
+    }
 }
