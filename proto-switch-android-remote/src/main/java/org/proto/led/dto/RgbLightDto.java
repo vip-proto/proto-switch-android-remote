@@ -93,6 +93,27 @@ public class RgbLightDto extends DimmableLightDto {
 
 
     public int calculateColor() {
-        return Color.rgb(redValue*4, greenValue*4, blueValue*4);
+        return Color.rgb(redValue*4*getIntensity()/64, greenValue*4*getIntensity()/64, blueValue*4*getIntensity()/64);
     }
+
+    public void setColor(int color){
+        int newRed = Color.red(color);
+        int newGreen = Color.green(color);
+        int newBlue = Color.blue(color);
+
+        int max = newRed > newGreen ? newRed : newGreen;
+        max = max > newBlue ? max : newBlue;
+
+        setIntensity(max/4);
+
+
+
+        if(getIntensity()!=0) {
+            setRedValue(newRed / 4 * 64 / getIntensity());
+            setGreenValue(newGreen / 4 * 64 / getIntensity());
+            setBlueValue(newBlue  / 4 * 64 / getIntensity());
+        }
+    }
+
+
 }

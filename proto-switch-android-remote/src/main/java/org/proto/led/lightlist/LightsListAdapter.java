@@ -29,6 +29,8 @@ package org.proto.led.lightlist;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +38,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 import org.proto.led.controller.R;
 import org.proto.led.dto.DimmableLightDto;
@@ -84,28 +92,51 @@ public class LightsListAdapter extends BaseAdapter {
 
         ToggleButton toggleButton = (ToggleButton) vi.findViewById(R.id.light_line_toggle_button);
         SeekBar seekBar = (SeekBar) vi.findViewById(R.id.light_line_seek_bar);
-        Button colorButton = (Button)vi.findViewById(R.id.light_line_color_button);
+        final Button colorButton = (Button)vi.findViewById(R.id.light_line_color_button);
         LightDto light = (LightDto) getItem(position);
         // Setting all values in listview
         toggleButton.setText(light.getName());
         toggleButton.setTextOn(light.getName());
         toggleButton.setTextOff(light.getName());
         if(light instanceof DimmableLightDto){
-            DimmableLightDto dimmableLightDto = (DimmableLightDto) light;
+            final DimmableLightDto dimmableLightDto = (DimmableLightDto) light;
             seekBar.setProgress(dimmableLightDto.getIntensity());
             seekBar.setVisibility(View.VISIBLE);
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    dimmableLightDto.setIntensity(progress);
+                    if(dimmableLightDto instanceof RgbLightDto){
+                        RgbLightDto rgbLightDto = (RgbLightDto) dimmableLightDto;
+                        setColorOnButton(colorButton, rgbLightDto.calculateColor());
+                    }
+
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    notifyDataSetChanged();
+                }
+            });
         } else {
             seekBar.setVisibility(View.INVISIBLE);
         }
         if(light instanceof RgbLightDto){
-            RgbLightDto rgbLightDto = (RgbLightDto) light;
+            final RgbLightDto rgbLightDto = (RgbLightDto) light;
             colorButton.setVisibility(View.VISIBLE);
             colorButton.setBackgroundResource(R.drawable.tags_rounded_corners);
-
-            GradientDrawable drawable = (GradientDrawable) colorButton.getBackground();
-
-                drawable.setColor(rgbLightDto.calculateColor());
-
+            colorButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getColor(rgbLightDto.calculateColor(), rgbLightDto);
+                }
+            });
+            setColorOnButton(colorButton, rgbLightDto.calculateColor());
         } else {
             colorButton.setVisibility(View.INVISIBLE);
         }
@@ -113,7 +144,66 @@ public class LightsListAdapter extends BaseAdapter {
         return vi;
     }
 
+    private void setColorOnButton(Button colorButton, int color){
+        GradientDrawable drawable = (GradientDrawable) colorButton.getBackground();
+        drawable.setColor(color);
+    }
+
     public ArrayList<LightDto> getData() {
         return data;
+    }
+
+    private void getColor(int color, final RgbLightDto rgbLightDto){
+        ColorPickerDialogBuilder
+                .with(activity)
+                .setTitle("Choose color")
+                .initialColor(color)
+                .wheelType(ColorPickerView.WHEEL_TYPE.CIRCLE)
+                .density(12)
+                .lightnessSliderOnly()
+                .setOnColorSelectedListener(new OnColorSelectedListener() {
+                    @Override
+                    public void onColorSelected(int selectedColor) {
+                        toast("onColorSelected: 0x" + Integer.toHexString(selectedColor));
+                        onLiveUpdate(rgbLightDto, selectedColor);
+                    }
+                })
+                .setPositiveButton("ok", new ColorPickerClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+                        toast("selected color " + Integer.toHexString(selectedColor));
+
+                        rgbLightDto.setColor(selectedColor);
+                        notifyDataSetChanged();
+                        onUpdate(rgbLightDto);
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .build()
+                .show();
+    }
+
+    private void toast(String s){
+
+        CharSequence text = "Hello toast!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(activity, text, duration);
+        toast.show();
+    }
+
+    public void onUpdate(LightDto updatedLight){
+
+
+    }
+
+    public void onLiveUpdate(LightDto updatedLight, int color){
+
+
     }
 }

@@ -90,27 +90,27 @@
                 android:touchscreenBlocksFocus="false"
                 android:theme="@style/Base.ThemeOverlay.AppCompat.Dark" />-->
 
-            <com.larswerkman.holocolorpicker.ColorPicker
-                android:id="@+id/picker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal" />
+            <!--<com.larswerkman.holocolorpicker.ColorPicker-->
+                <!--android:id="@+id/picker"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_horizontal" />-->
             <!--<com.larswerkman.holocolorpicker.SVBar
                 android:id="@+id/svbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal" />-->
-            <com.larswerkman.holocolorpicker.SaturationBar
-                android:id="@+id/saturationbar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal" />
-            <com.larswerkman.holocolorpicker.ValueBar
-                android:id="@+id/valuebar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_gravity="center_horizontal" />
+            <!--<com.larswerkman.holocolorpicker.SaturationBar-->
+                <!--android:id="@+id/saturationbar"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_horizontal" />-->
+            <!--<com.larswerkman.holocolorpicker.ValueBar-->
+                <!--android:id="@+id/valuebar"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="15dp"-->
+                <!--android:layout_gravity="center_horizontal" />-->
 
             <TextView
                 android:layout_width="wrap_content"

@@ -47,7 +47,7 @@
         style="@android:style/Widget.DeviceDefault.SeekBar"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:max="64"
+        android:max="63"
         android:progress="15"
         android:id="@+id/light_line_seek_bar"
         android:layout_weight="2" />

@@ -80,6 +80,7 @@ public class Storage {
 		ledLightDto1.setRedValue(50);
 		ledLightDto1.setGreenValue(1);
 		ledLightDto1.setBlueValue(2);
+		ledLightDto1.setIntensity(50);
 		RgbLightDto ledLightDto2 = new RgbLightDto();
 		ledLightDto2.setName("Daska dole");
 		ledLightDto2.setRedChannel(3);
@@ -88,6 +89,7 @@ public class Storage {
 		ledLightDto2.setRedValue(3);
 		ledLightDto2.setGreenValue(40);
 		ledLightDto2.setBlueValue(5);
+		ledLightDto2.setIntensity(40);
 		RgbLightDto ledLightDto3 = new RgbLightDto();
 		ledLightDto3.setName("Zavesa");
 		ledLightDto3.setRedChannel(6);
@@ -96,6 +98,7 @@ public class Storage {
 		ledLightDto3.setRedValue(6);
 		ledLightDto3.setGreenValue(7);
 		ledLightDto3.setBlueValue(30);
+		ledLightDto3.setIntensity(30);
 		ledLightDtos.add(ledLightDto1);
 		ledLightDtos.add(ledLightDto2);
 		ledLightDtos.add(ledLightDto3);

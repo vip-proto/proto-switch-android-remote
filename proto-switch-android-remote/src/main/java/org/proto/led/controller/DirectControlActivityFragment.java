@@ -41,9 +41,9 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.larswerkman.holocolorpicker.ColorPicker;
-import com.larswerkman.holocolorpicker.SaturationBar;
-import com.larswerkman.holocolorpicker.ValueBar;
+//import com.larswerkman.holocolorpicker.ColorPicker;
+//import com.larswerkman.holocolorpicker.SaturationBar;
+//import com.larswerkman.holocolorpicker.ValueBar;
 
 import org.proto.led.dto.ControllerDto;
 import org.proto.led.dto.LightDto;
@@ -56,7 +56,7 @@ import java.util.ArrayList;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DirectControlActivityFragment extends Fragment implements ColorPicker.OnColorChangedListener {
+public class DirectControlActivityFragment extends Fragment /*implements ColorPicker.OnColorChangedListener */{
 
     private Spinner selectControllerSpinner;
     private Spinner selectLightSpinner;
@@ -96,27 +96,29 @@ public class DirectControlActivityFragment extends Fragment implements ColorPick
 //        setupLightSpinner();
         //-----------------------------------
         textView = (TextView) getActivity().findViewById(R.id.textView);
-        final ColorPicker picker = (ColorPicker) getActivity().findViewById(R.id.picker);
-//        SVBar svBar = (SVBar) getActivity().findViewById(R.id.svbar);
-        final SaturationBar saturationBar = (SaturationBar) getActivity().findViewById(R.id.saturationbar);
-        saturationBar.setSaturation(1);
-        final ValueBar valueBar = (ValueBar) getActivity().findViewById(R.id.valuebar);
-        saturationBar.setOnSaturationChangedListener(new SaturationBar.OnSaturationChangedListener() {
-            @Override
-            public void onSaturationChanged(int saturation) {
-                valueBar.setColor(saturationBar.getColor());
-//                picker.setNewCenterColor(valueBar.getColor());
-                colorChanged(valueBar.getColor());
-            }
-        });
-        valueBar.setValue(1);
-        valueBar.setOnValueChangedListener(new ValueBar.OnValueChangedListener() {
-            @Override
-            public void onValueChanged(int value) {
-                colorChanged(value);
-//                picker.setNewCenterColor(value);
-            }
-        });
+//        final ColorPicker picker = (ColorPicker) getActivity().findViewById(R.id.picker);
+////        SVBar svBar = (SVBar) getActivity().findViewById(R.id.svbar);
+//        final SaturationBar saturationBar = (SaturationBar) getActivity().findViewById(R.id.saturationbar);
+//        saturationBar.setSaturation(1);
+//        final ValueBar valueBar = (ValueBar) getActivity().findViewById(R.id.valuebar);
+//        saturationBar.setOnSaturationChangedListener(new SaturationBar.OnSaturationChangedListener() {
+//            @Override
+//            public void onSaturationChanged(int saturation) {
+//                valueBar.setColor(saturationBar.getColor());
+////                picker.setNewCenterColor(valueBar.getColor());
+//                colorChanged(valueBar.getColor());
+//            }
+//        });
+//        valueBar.setValue(1);
+//        valueBar.setOnValueChangedListener(new ValueBar.OnValueChangedListener() {
+//            @Override
+//            public void onValueChanged(int value) {
+//                colorChanged(value);
+////                picker.setNewCenterColor(value);
+//            }
+//        });
+
+
 //        picker.addSVBar(svBar);
 //        picker.addSaturationBar(saturationBar);
 //        picker.addValueBar(valueBar);
@@ -129,18 +131,18 @@ public class DirectControlActivityFragment extends Fragment implements ColorPick
 //        picker.setOldCenterColor(picker.getColor());
 // adds listener to the colorpicker which is implemented
 //in the activity
-        picker.setOnColorChangedListener(this);
+//        picker.setOnColorChangedListener(this);
 
 
 //to turn of showing the old color
-        picker.setShowOldCenterColor(false);
-        picker.setTouchAnywhereOnColorWheelEnabled(true);
-        picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
-            @Override
-            public void onColorChanged(int color) {
-                saturationBar.setColor(color);
-                valueBar.setColor(saturationBar.getColor());
-                colorChanged(valueBar.getColor());
+//        picker.setShowOldCenterColor(false);
+//        picker.setTouchAnywhereOnColorWheelEnabled(true);
+//        picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
+//            @Override
+//            public void onColorChanged(int color) {
+//                saturationBar.setColor(color);
+//                valueBar.setColor(saturationBar.getColor());
+//                colorChanged(valueBar.getColor());
 //                if (picker.getColor() == valueBar.getColor() ) {
 //                    colorChanged(valueBar.getColor());
 //                }else if(valueBar.getColor() == saturationBar.getColor()){
@@ -148,9 +150,9 @@ public class DirectControlActivityFragment extends Fragment implements ColorPick
 //                } else if(picker.getColor() ==saturationBar.getColor() ){
 //                    colorChanged(valueBar.getColor());
 //                }
-                Log.i(TAG, "color from get: "+  String.format("#%06X", (0xFFFFFF & color)) + " " +String.format("#%06X", (0xFFFFFF & picker.getColor())) + " " + String.format("#%06X", (0xFFFFFF & valueBar.getColor())) + " " + String.format("#%06X", (0xFFFFFF & saturationBar.getColor())));
-            }
-        });
+//                Log.i(TAG, "color from get: "+  String.format("#%06X", (0xFFFFFF & color)) + " " +String.format("#%06X", (0xFFFFFF & picker.getColor())) + " " + String.format("#%06X", (0xFFFFFF & valueBar.getColor())) + " " + String.format("#%06X", (0xFFFFFF & saturationBar.getColor())));
+//            }
+//        });
 //        picker.setOnColorSelectedListener(new ColorPicker.OnColorSelectedListener() {
 //            @Override
 //            public void onColorSelected(int color) {
@@ -375,8 +377,8 @@ public class DirectControlActivityFragment extends Fragment implements ColorPick
 //        }
 //    }
 
-    @Override
-    public void onColorChanged(int color) {
-
-    }
+//    @Override
+//    public void onColorChanged(int color) {
+//
+//    }
 }
