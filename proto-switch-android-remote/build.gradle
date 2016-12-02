@@ -69,8 +69,12 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:22.1.1'
     //    compile 'com.google.android.gms:play-services:4.0.30'
     //    compile 'com.larswerkman:HoloColorPicker:1.5+'
+    compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.github.QuadFlask:colorpicker:0.0.12'
+    compile 'com.android.support:design:23.2.1'
+    compile 'com.android.support:support-v4:23.2.1'
+    compile 'com.android.support:recyclerview-v7:23.2.1'
+    compile 'com.google.code.gson:gson:2.6.2'
 }

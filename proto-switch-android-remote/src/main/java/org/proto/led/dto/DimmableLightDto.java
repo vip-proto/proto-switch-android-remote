@@ -34,11 +34,19 @@ package org.proto.led.dto;
 public class DimmableLightDto extends LightDto {
     private int intensity;
 
+    public DimmableLightDto() {
+        setType(DIMMABLE_LIGHT);
+    }
+
     public int getIntensity() {
         return intensity;
     }
 
     public void setIntensity(int intensity) {
         this.intensity = intensity;
+    }
+
+    public int getCalculatedIntensity() {
+        return intensity * (isOn() ? 1 : 0);
     }
 }

@@ -34,6 +34,8 @@ import java.util.ArrayList;
  */
 
 public class ThemeDto {
+
+    private String name;
     private ArrayList<LightDto> lights;
 
     public ArrayList<LightDto> getLights() {
@@ -42,5 +44,13 @@ public class ThemeDto {
 
     public void setLights(ArrayList<LightDto> lights) {
         this.lights = lights;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -27,45 +27,78 @@
 
 package org.proto.led.lightlist;
 
+import android.app.Fragment;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.proto.led.controller.R;
+import org.proto.led.dto.DimmableLightDto;
 import org.proto.led.dto.LightDto;
 import org.proto.led.dto.RgbLightDto;
+import org.proto.led.lightlist.fragment.LightsListFragment;
+import org.proto.led.network.WifiController;
 import org.proto.led.storage.Storage;
 
 import java.util.ArrayList;
 
-public class LightsListActivity extends AppCompatActivity {
+public class LightsListActivity extends AppCompatActivity implements LightsListFragment.OnFragmentInteractionListener {
 
 
     private ListView listView;
     private LightsListAdapter lightsListAdapter;
+
+    private static String TAG = "LightsListActivity";
+    private LightsListFragment lightsListFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lights_list);
-        setupChildren();
-        displayData();
-    }
-
-    private void setupChildren() {
-        listView = (ListView) findViewById(R.id.lights_list_list);
-
-
-        // Getting adapter by passing xml data ArrayList
-        lightsListAdapter =new LightsListAdapter(this);
-        listView.setAdapter(lightsListAdapter);
-    }
-
-    private void displayData() {
-        lightsListAdapter.getData().clear();
-        ArrayList<LightDto> rgbLightDtos = Storage.loadLights();
-        lightsListAdapter.getData().addAll(rgbLightDtos);
+        lightsListFragment = (LightsListFragment) getSupportFragmentManager().findFragmentById(R.id.lights_list_fragment);
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        lightsListFragment.displayData(Storage.loadLights(this));
+    }
+
+    @Override
+    public void onLightChange(LightDto light) {
+        onLightLiveChange(light);
+        Storage.updateLights(this, light);
+        //logs
+        String lightDescription = "";
+        if (light instanceof RgbLightDto) {
+            RgbLightDto rgbLightDto = (RgbLightDto) light;
+            lightDescription = "R" + rgbLightDto.getCalculatedRedValue() + " G" + rgbLightDto.getCalculatedGreenValue() + " B" + rgbLightDto.getCalculatedBlueValue();
+        } else if (light instanceof DimmableLightDto) {
+            DimmableLightDto dimmableLightDto = (DimmableLightDto) light;
+            lightDescription = "D" + dimmableLightDto.getIntensity();
+        }
+        toast(light.getName() + " " + light.isOn() + " " + lightDescription);
+
+    }
+
+    @Override
+    public void onLightLiveChange(LightDto light) {
+
+        WifiController.setLight(this, light);
+
+    }
+
+    private void toast(String s) {
+        Log.d(TAG, "toast: " + s);
+
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(this, s, duration);
+        toast.show();
+    }
 }

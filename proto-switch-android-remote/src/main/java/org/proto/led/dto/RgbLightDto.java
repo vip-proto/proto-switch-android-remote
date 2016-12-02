@@ -42,6 +42,9 @@ public class RgbLightDto extends DimmableLightDto {
     private int greenValue;
     private int blueValue;
 
+    public RgbLightDto() {
+        setType(RGB_LIGHT);
+    }
 
     public int getRedChannel() {
         return redChannel;
@@ -71,6 +74,10 @@ public class RgbLightDto extends DimmableLightDto {
         return redValue;
     }
 
+    public int getCalculatedRedValue() {
+        return redValue * getIntensity() / 64 * (isOn()?1:0);
+    }
+
     public void setRedValue(int redValue) {
         this.redValue = redValue;
     }
@@ -78,6 +85,11 @@ public class RgbLightDto extends DimmableLightDto {
     public int getGreenValue() {
         return greenValue;
     }
+
+    public int getCalculatedGreenValue() {
+        return greenValue * getIntensity() / 64*(isOn()?1:0);
+    }
+
 
     public void setGreenValue(int greenValue) {
         this.greenValue = greenValue;
@@ -87,16 +99,20 @@ public class RgbLightDto extends DimmableLightDto {
         return blueValue;
     }
 
+    public int getCalculatedBlueValue() {
+        return blueValue * getIntensity() / 64*(isOn()?1:0);
+    }
+
     public void setBlueValue(int blueValue) {
         this.blueValue = blueValue;
     }
 
 
     public int calculateColor() {
-        return Color.rgb(redValue*4*getIntensity()/64, greenValue*4*getIntensity()/64, blueValue*4*getIntensity()/64);
+        return Color.rgb(redValue * 4 * getIntensity() / 64, greenValue * 4 * getIntensity() / 64, blueValue * 4 * getIntensity() / 64);
     }
 
-    public void setColor(int color){
+    public void setColor(int color) {
         int newRed = Color.red(color);
         int newGreen = Color.green(color);
         int newBlue = Color.blue(color);
@@ -104,15 +120,33 @@ public class RgbLightDto extends DimmableLightDto {
         int max = newRed > newGreen ? newRed : newGreen;
         max = max > newBlue ? max : newBlue;
 
-        setIntensity(max/4);
+        setIntensity(max / 4);
 
 
-
-        if(getIntensity()!=0) {
+        if (getIntensity() != 0) {
             setRedValue(newRed / 4 * 64 / getIntensity());
             setGreenValue(newGreen / 4 * 64 / getIntensity());
-            setBlueValue(newBlue  / 4 * 64 / getIntensity());
+            setBlueValue(newBlue / 4 * 64 / getIntensity());
         }
+    }
+
+    public DimmableLightDto toDimmableLightDto() {
+        DimmableLightDto dimmableLightDto = new DimmableLightDto();
+        dimmableLightDto.setOn(isOn());
+        dimmableLightDto.setControllerDto(getControllerDto());
+        dimmableLightDto.setIntensity(getIntensity());
+        dimmableLightDto.setChannel(getChannel());
+        dimmableLightDto.setName(getName());
+        return dimmableLightDto;
+    }
+
+    public LightDto toLightDto() {
+        LightDto lightDto = new LightDto();
+        lightDto.setOn(isOn());
+        lightDto.setControllerDto(getControllerDto());
+        lightDto.setChannel(getChannel());
+        lightDto.setName(getName());
+        return lightDto;
     }
 
 

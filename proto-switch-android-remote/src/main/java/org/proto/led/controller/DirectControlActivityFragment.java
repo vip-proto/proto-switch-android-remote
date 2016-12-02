@@ -188,13 +188,13 @@ public class DirectControlActivityFragment extends Fragment /*implements ColorPi
         allButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                turnOff(Storage.loadLights().toArray(new RgbLightDto[]{}));
+                turnOff(Storage.loadLights(getActivity()).toArray(new RgbLightDto[]{}));
             }
         });
         allButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
         offHolder.addView(allButton);
 
-        ArrayList<LightDto> ledLightDtos = Storage.loadLights();
+        ArrayList<LightDto> ledLightDtos = Storage.loadLights(getActivity());
 
         for (final LightDto l : ledLightDtos) {
             if(l instanceof RgbLightDto) {
@@ -223,7 +223,7 @@ public class DirectControlActivityFragment extends Fragment /*implements ColorPi
         if (selectedLight != null) {
             updateColor(redInt, greenInt, blueInt, selectedLight);
         } else {
-            updateColor(redInt, greenInt, blueInt, Storage.loadLights().toArray(new RgbLightDto[]{}));
+            updateColor(redInt, greenInt, blueInt, Storage.loadLights(getActivity()).toArray(new RgbLightDto[]{}));
         }
     }
 
@@ -234,7 +234,7 @@ public class DirectControlActivityFragment extends Fragment /*implements ColorPi
             updateSingleLight(lightDto, redInt, greenInt, blueInt);
         }
         sendCommandToController(selectedLight);
-        Storage.updateLights(selectedLight);
+        Storage.updateLights(getActivity(), selectedLight);
     }
 
     private void sendCommandToController(RgbLightDto... selectedLight) {
@@ -290,7 +290,7 @@ public class DirectControlActivityFragment extends Fragment /*implements ColorPi
         allButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
         selectorHolder.addView(allButton);
 
-        ArrayList<LightDto> ledLightDtos = Storage.loadLights();
+        ArrayList<LightDto> ledLightDtos = Storage.loadLights(getActivity());
         for ( LightDto l : ledLightDtos) {
             if(l instanceof RgbLightDto) {
                 final RgbLightDto light = (RgbLightDto) l;

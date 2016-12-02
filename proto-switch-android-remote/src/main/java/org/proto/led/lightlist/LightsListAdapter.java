@@ -37,6 +37,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -93,11 +94,29 @@ public class LightsListAdapter extends BaseAdapter {
         ToggleButton toggleButton = (ToggleButton) vi.findViewById(R.id.light_line_toggle_button);
         SeekBar seekBar = (SeekBar) vi.findViewById(R.id.light_line_seek_bar);
         final Button colorButton = (Button)vi.findViewById(R.id.light_line_color_button);
-        LightDto light = (LightDto) getItem(position);
+        final LightDto light = (LightDto) getItem(position);
         // Setting all values in listview
         toggleButton.setText(light.getName());
         toggleButton.setTextOn(light.getName());
         toggleButton.setTextOff(light.getName());
+        toggleButton.setChecked(light.isOn());
+        toggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToggleButton button = (ToggleButton) v;
+                if(button.isChecked()!=light.isOn()){
+                    light.setOn(button.isChecked());
+                    onUpdate(light);
+                }
+            }
+        });
+//        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                light.setOn(isChecked);
+//
+//            }
+//        });
         if(light instanceof DimmableLightDto){
             final DimmableLightDto dimmableLightDto = (DimmableLightDto) light;
             seekBar.setProgress(dimmableLightDto.getIntensity());
@@ -105,12 +124,14 @@ public class LightsListAdapter extends BaseAdapter {
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    dimmableLightDto.setIntensity(progress);
-                    if(dimmableLightDto instanceof RgbLightDto){
-                        RgbLightDto rgbLightDto = (RgbLightDto) dimmableLightDto;
-                        setColorOnButton(colorButton, rgbLightDto.calculateColor());
+                    if(fromUser) {
+                        dimmableLightDto.setIntensity(progress);
+                        if (dimmableLightDto instanceof RgbLightDto) {
+                            RgbLightDto rgbLightDto = (RgbLightDto) dimmableLightDto;
+                            setColorOnButton(colorButton, rgbLightDto.calculateColor());
+                        }
+                        onLiveUpdate(dimmableLightDto);
                     }
-
                 }
 
                 @Override
@@ -120,6 +141,8 @@ public class LightsListAdapter extends BaseAdapter {
 
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
+                    dimmableLightDto.setIntensity(seekBar.getProgress());
+                    onUpdate(dimmableLightDto);
                     notifyDataSetChanged();
                 }
             });
@@ -154,25 +177,24 @@ public class LightsListAdapter extends BaseAdapter {
     }
 
     private void getColor(int color, final RgbLightDto rgbLightDto){
+        int[] colors = new int[4];
         ColorPickerDialogBuilder
                 .with(activity)
                 .setTitle("Choose color")
                 .initialColor(color)
-                .wheelType(ColorPickerView.WHEEL_TYPE.CIRCLE)
+                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
                 .density(12)
                 .lightnessSliderOnly()
                 .setOnColorSelectedListener(new OnColorSelectedListener() {
                     @Override
                     public void onColorSelected(int selectedColor) {
-                        toast("onColorSelected: 0x" + Integer.toHexString(selectedColor));
-                        onLiveUpdate(rgbLightDto, selectedColor);
+                        rgbLightDto.setColor(selectedColor);
+                        onLiveUpdate(rgbLightDto);
                     }
                 })
                 .setPositiveButton("ok", new ColorPickerClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
-                        toast("selected color " + Integer.toHexString(selectedColor));
-
                         rgbLightDto.setColor(selectedColor);
                         notifyDataSetChanged();
                         onUpdate(rgbLightDto);
@@ -188,21 +210,13 @@ public class LightsListAdapter extends BaseAdapter {
                 .show();
     }
 
-    private void toast(String s){
-
-        CharSequence text = "Hello toast!";
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(activity, text, duration);
-        toast.show();
-    }
 
     public void onUpdate(LightDto updatedLight){
 
 
     }
 
-    public void onLiveUpdate(LightDto updatedLight, int color){
+    public void onLiveUpdate(LightDto updatedLight){
 
 
     }

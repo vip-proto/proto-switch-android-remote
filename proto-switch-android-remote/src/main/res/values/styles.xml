@@ -31,11 +31,19 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!--&lt;!&ndash;&lt;!&ndash; Customize your theme here. &ndash;&gt;&ndash;&gt;-->
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <!--<style name="AppTheme" parent="Theme.AppCompat">-->
-        <!--&lt;!&ndash;&lt;!&ndash; Customize your theme here. &ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash; Customize your theme here. &ndash;&gt;&ndash;&gt;-->
     <!--</style>-->
     <!--<style name="AppTheme" parent="android:Theme.Holo"></style>-->
-
 
 
 </resources>

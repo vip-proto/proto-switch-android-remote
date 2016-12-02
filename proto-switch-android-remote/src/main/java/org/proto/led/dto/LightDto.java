@@ -32,10 +32,14 @@ package org.proto.led.dto;
  */
 
 public class LightDto {
+    public static String LIGHT = "LightDto";
+    public static String DIMMABLE_LIGHT = "DimmableLightDto";
+    public static String RGB_LIGHT = "RgbLightDto";
     private ControllerDto controllerDto;
     private String name;
     private boolean on;
     private int channel;
+    private String type = LIGHT;
 
     public ControllerDto getControllerDto() {
         return controllerDto;
@@ -69,8 +73,32 @@ public class LightDto {
         this.channel = channel;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LightDto lightDto = (LightDto) o;
+
+        return name.equals(lightDto.name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 }

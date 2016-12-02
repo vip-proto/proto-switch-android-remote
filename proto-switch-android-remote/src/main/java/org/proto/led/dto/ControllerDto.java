@@ -39,6 +39,7 @@ public class ControllerDto {
 	public String getName() {
 		return name;
 	}
+	private int numberOfChanels;
 
 	public void setName(String name) {
 		this.name = name;
@@ -63,5 +64,13 @@ public class ControllerDto {
 
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
+	}
+
+	public int getNumberOfChanels() {
+		return numberOfChanels;
+	}
+
+	public void setNumberOfChanels(int numberOfChanels) {
+		this.numberOfChanels = numberOfChanels;
 	}
 }

@@ -33,4 +33,9 @@
     <string name="detecting_controllers">While you are on this screen app is discovering new controllers.\nDetected devices:</string>
     <string name="discovery_menu">Discovery</string>
     <string name="lights_menu">Lights</string>
+    <string name="title_activity_theme">Themes</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="preference_whole_model">PREFERENCE_WHOLE_MODEL</string>
 </resources>
