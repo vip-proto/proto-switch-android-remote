@@ -28,6 +28,9 @@
 package org.proto.led.lightlist;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,6 +44,7 @@ import org.proto.led.dto.DimmableLightDto;
 import org.proto.led.dto.LightDto;
 import org.proto.led.dto.RgbLightDto;
 import org.proto.led.lightlist.fragment.LightsListFragment;
+import org.proto.led.network.WiFiControllerService;
 import org.proto.led.network.WifiController;
 import org.proto.led.storage.Storage;
 
@@ -54,19 +58,33 @@ public class LightsListActivity extends AppCompatActivity implements LightsListF
 
     private static String TAG = "LightsListActivity";
     private LightsListFragment lightsListFragment;
+    private BroadcastReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lights_list);
         lightsListFragment = (LightsListFragment) getSupportFragmentManager().findFragmentById(R.id.lights_list_fragment);
+        Intent intent = new Intent(this, WiFiControllerService.class);
+        startService(intent);
 
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                refreshListFromStorage();
+            }
+        };
+
+    }
+
+    private void refreshListFromStorage(){
+        lightsListFragment.displayData(Storage.loadLights(this));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        lightsListFragment.displayData(Storage.loadLights(this));
+        refreshListFromStorage();
     }
 
     @Override
@@ -82,7 +100,7 @@ public class LightsListActivity extends AppCompatActivity implements LightsListF
             DimmableLightDto dimmableLightDto = (DimmableLightDto) light;
             lightDescription = "D" + dimmableLightDto.getIntensity();
         }
-        toast(light.getName() + " " + light.isOn() + " " + lightDescription);
+//        toast(light.getName() + " " + light.isOn() + " " + lightDescription);
 
     }
 

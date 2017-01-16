@@ -34,7 +34,7 @@ import java.util.ArrayList;
  */
 public class ControllerDto {
 	private String                 name;
-	private ArrayList<RgbLightDto> ledLights = new ArrayList<RgbLightDto>(  );
+	private ArrayList<LightDto> ledLights = new ArrayList<LightDto>(  );
 	private String ipAddress;
 	public String getName() {
 		return name;
@@ -50,11 +50,11 @@ public class ControllerDto {
 		return name;
 	}
 
-	public ArrayList<RgbLightDto> getLedLights() {
+	public ArrayList<LightDto> getLedLights() {
 		return ledLights;
 	}
 
-	public void setLedLights(ArrayList<RgbLightDto> ledLights) {
+	public void setLedLights(ArrayList<LightDto> ledLights) {
 		this.ledLights = ledLights;
 	}
 

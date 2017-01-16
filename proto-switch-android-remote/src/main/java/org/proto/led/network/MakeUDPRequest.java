@@ -84,10 +84,10 @@ public class MakeUDPRequest extends AsyncTask<String, Void, String> {
         try {
             InetAddress IPAddress = InetAddress.getByName(address);
 //            InetAddress IPAddress = getBroadcastAddress();
-            DatagramSocket client_socket = new DatagramSocket(port);
+            DatagramSocket client_socket = new DatagramSocket(6001);//TODO: samo jednom
             DatagramPacket send_packet = new DatagramPacket(message, message.length, IPAddress, port);
             client_socket.send(send_packet);
-            client_socket.close();
+            client_socket.close();// TODO: samo jednom
         } catch (SocketException e) {
             e.printStackTrace();
         } catch (UnknownHostException e) {
