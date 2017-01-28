@@ -97,7 +97,7 @@ public class WiFiControllerService extends Service {
         ArrayList<LightDto> lights = parseLights(b, numberOfLights);
         ControllerDto controllerDto = createController(senderIp, b);
         controllerDto.setNumberOfChanels(numberOfChannels);
-        controllerDto.setLedLights(lights);
+//        controllerDto.setLedLights(lights);
         controllerDto.setName(controllerName);
         for (LightDto light : lights) {
             light.setControllerDto(controllerDto);

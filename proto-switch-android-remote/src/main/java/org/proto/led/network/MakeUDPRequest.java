@@ -79,12 +79,12 @@ public class MakeUDPRequest extends AsyncTask<String, Void, String> {
     }
 
 
-    private void sendUDP() {
+    protected void sendUDP() {
 
         try {
             InetAddress IPAddress = InetAddress.getByName(address);
 //            InetAddress IPAddress = getBroadcastAddress();
-            DatagramSocket client_socket = new DatagramSocket(6001);//TODO: samo jednom
+            DatagramSocket client_socket = new DatagramSocket();//TODO: samo jednom
             DatagramPacket send_packet = new DatagramPacket(message, message.length, IPAddress, port);
             client_socket.send(send_packet);
             client_socket.close();// TODO: samo jednom
@@ -111,10 +111,11 @@ public class MakeUDPRequest extends AsyncTask<String, Void, String> {
         return InetAddress.getByAddress(quads);
     }
 
+    public byte[] getMessage() {
+        return message;
+    }
 
-
-
-
-
-
+    public int getPort() {
+        return port;
+    }
 }

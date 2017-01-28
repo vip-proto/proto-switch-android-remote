@@ -99,10 +99,17 @@ public class LightsListFragment extends Fragment {
 
     @Override
     public void onStart() {
+
         super.onResume();
         setupChildren();
+
     }
 
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        setupChildren();
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

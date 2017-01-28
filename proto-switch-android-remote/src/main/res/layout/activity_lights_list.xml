@@ -44,6 +44,14 @@
         android:name="org.proto.led.lightlist.fragment.LightsListFragment"
         android:id="@+id/lights_list_fragment"/>
 
+    <Button
+        android:text="Broadcast discovery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button"
+        android:onClick="onClick"/>
+
+
     <!--<ListView-->
         <!--android:id="@+id/lights_list_list"-->
         <!--android:layout_width="match_parent"-->

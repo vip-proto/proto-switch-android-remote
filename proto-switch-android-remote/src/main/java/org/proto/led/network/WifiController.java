@@ -64,6 +64,14 @@ public class WifiController {
         new MakeUDPRequest(ip, 6000, command, context).execute();
     }
 
+    public static void startDiscovery(Context context){
+        byte[] command = new byte[2];
+        //  0x8f 0x1f
+        command[0] = (byte) 0x8f;
+        command[1] = 0x1f;
+        new MakeUDPBroadcastRequest(6000, command, context).execute();
+    }
+
     public static void setAllLights(LightDto... allLights) {
     //TODO: treba da se napravi da ih sve setuje odjednom po kontroleru. mozda bi gornja metoda mogla da vraca niz komandi koji bi se dodatno azurirao kad se naidje na svetlo na istom kontroleru.
     }

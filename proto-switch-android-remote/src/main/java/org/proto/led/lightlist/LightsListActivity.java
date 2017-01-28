@@ -64,7 +64,7 @@ public class LightsListActivity extends AppCompatActivity implements LightsListF
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lights_list);
-        lightsListFragment = (LightsListFragment) getSupportFragmentManager().findFragmentById(R.id.lights_list_fragment);
+        lightsListFragment = getLightsFragment();
         Intent intent = new Intent(this, WiFiControllerService.class);
         startService(intent);
 
@@ -78,7 +78,15 @@ public class LightsListActivity extends AppCompatActivity implements LightsListF
     }
 
     private void refreshListFromStorage(){
-        lightsListFragment.displayData(Storage.loadLights(this));
+        lightsListFragment = getLightsFragment();
+        if(lightsListFragment.isAdded()){
+            lightsListFragment.getView().setVisibility(View.VISIBLE);
+        }
+        getLightsFragment().displayData(Storage.loadLights(this));
+    }
+
+    private LightsListFragment getLightsFragment(){
+        return (LightsListFragment) getSupportFragmentManager().findFragmentById(R.id.lights_list_fragment);
     }
 
     @Override
@@ -118,5 +126,9 @@ public class LightsListActivity extends AppCompatActivity implements LightsListF
 
         Toast toast = Toast.makeText(this, s, duration);
         toast.show();
+    }
+
+    public void onClick(View view) {
+        WifiController.startDiscovery(this);
     }
 }
