@@ -45,7 +45,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
-
+import org.proto.led.controller.DirectControlActivityFragment;
 import org.proto.led.controller.R;
 import org.proto.led.dto.DimmableLightDto;
 import org.proto.led.dto.LightDto;
@@ -53,25 +53,20 @@ import org.proto.led.dto.RgbLightDto;
 
 import java.util.ArrayList;
 
-import es.dmoral.coloromatic.ColorOMaticDialog;
-import es.dmoral.coloromatic.IndicatorMode;
-import es.dmoral.coloromatic.OnColorSelectedListener;
-import es.dmoral.coloromatic.colormode.ColorMode;
-
-import static android.R.attr.duration;
 
 /**
  * Created by Predrag on 16.10.2016..
  */
 
-public class LightsListAdapter extends BaseAdapter {
+public class LightsListAdapter extends BaseAdapter implements DirectControlActivityFragment.OnFragmentInteractionListener {
 
     private Activity activity;
     private ArrayList<LightDto> data = new ArrayList<LightDto>();
-    private static LayoutInflater inflater=null;
+    private static LayoutInflater inflater = null;
+
     public LightsListAdapter(Activity a) {
         activity = a;
-        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -91,13 +86,13 @@ public class LightsListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View vi=convertView;
-        if(convertView==null)
+        View vi = convertView;
+        if (convertView == null)
             vi = inflater.inflate(R.layout.light_line, null);
 
         ToggleButton toggleButton = (ToggleButton) vi.findViewById(R.id.light_line_toggle_button);
         SeekBar seekBar = (SeekBar) vi.findViewById(R.id.light_line_seek_bar);
-        final Button colorButton = (Button)vi.findViewById(R.id.light_line_color_button);
+        final Button colorButton = (Button) vi.findViewById(R.id.light_line_color_button);
         final LightDto light = (LightDto) getItem(position);
         // Setting all values in listview
         toggleButton.setText(light.getName());
@@ -108,7 +103,7 @@ public class LightsListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 ToggleButton button = (ToggleButton) v;
-                if(button.isChecked()!=light.isOn()){
+                if (button.isChecked() != light.isOn()) {
                     light.setOn(button.isChecked());
                     onUpdate(light);
                 }
@@ -121,14 +116,14 @@ public class LightsListAdapter extends BaseAdapter {
 //
 //            }
 //        });
-        if(light instanceof DimmableLightDto){
+        if (light instanceof DimmableLightDto) {
             final DimmableLightDto dimmableLightDto = (DimmableLightDto) light;
             seekBar.setProgress(dimmableLightDto.getIntensity());
             seekBar.setVisibility(View.VISIBLE);
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    if(fromUser) {
+                    if (fromUser) {
                         dimmableLightDto.setIntensity(progress);
                         if (dimmableLightDto instanceof RgbLightDto) {
                             RgbLightDto rgbLightDto = (RgbLightDto) dimmableLightDto;
@@ -153,7 +148,7 @@ public class LightsListAdapter extends BaseAdapter {
         } else {
             seekBar.setVisibility(View.INVISIBLE);
         }
-        if(light instanceof RgbLightDto){
+        if (light instanceof RgbLightDto) {
             final RgbLightDto rgbLightDto = (RgbLightDto) light;
             colorButton.setVisibility(View.VISIBLE);
             colorButton.setBackgroundResource(R.drawable.tags_rounded_corners);
@@ -171,7 +166,7 @@ public class LightsListAdapter extends BaseAdapter {
         return vi;
     }
 
-    private void setColorOnButton(Button colorButton, int color){
+    private void setColorOnButton(Button colorButton, int color) {
         GradientDrawable drawable = (GradientDrawable) colorButton.getBackground();
         drawable.setColor(color);
     }
@@ -180,27 +175,32 @@ public class LightsListAdapter extends BaseAdapter {
         return data;
     }
 
-    private void getColor(int color, final RgbLightDto rgbLightDto){
+    private void getColor(int color, final RgbLightDto rgbLightDto) {
         int[] colors = new int[4];
 
-         new ColorOMaticDialog.Builder()
-                .initialColor(color)
-                .colorMode(ColorMode.RGB) // RGB, ARGB, HVS
-                .indicatorMode(IndicatorMode.DECIMAL) // HEX or DECIMAL; Note that using HSV with IndicatorMode.HEX is not recommended
-                .onColorSelected(new OnColorSelectedListener() {
-                    @Override
-                    public void onColorSelected(@ColorInt int i) {
+        new DirectControlActivityFragment.Builder(activity)
+                .setSelectedColor(rgbLightDto)
+                .setOnFragmentInteractionListener(this)
+                .show();
+//
+//         new ColorOMaticDialog.Builder()
+//                .initialColor(color)
+//                .colorMode(ColorMode.RGB) // RGB, ARGB, HVS
+//                .indicatorMode(IndicatorMode.DECIMAL) // HEX or DECIMAL; Note that using HSV with IndicatorMode.HEX is not recommended
+//                .onColorSelected(new OnColorSelectedListener() {
+//                    @Override
+//                    public void onColorSelected(@ColorInt int i) {
+////                        rgbLightDto.setColor(i);
+////                        onLiveUpdateRGB(rgbLightDto);
+//
 //                        rgbLightDto.setColor(i);
-//                        onLiveUpdate(rgbLightDto);
-
-                        rgbLightDto.setColor(i);
-                        notifyDataSetChanged();
-                        onUpdate(rgbLightDto);
-                    }
-                })
-                .showColorIndicator(true) // Default false, choose to show text indicator showing the current color in HEX or DEC (see images) or not
-                .create()
-                .show(((AppCompatActivity) activity).getSupportFragmentManager(), "ColorOMaticDialog");
+//                        notifyDataSetChanged();
+//                        onUpdate(rgbLightDto);
+//                    }
+//                })
+//                .showColorIndicator(true) // Default false, choose to show text indicator showing the current color in HEX or DEC (see images) or not
+//                .create()
+//                .show(((AppCompatActivity) activity).getSupportFragmentManager(), "ColorOMaticDialog");
 //        ColorPickerDialogBuilder
 //                .with(activity)
 //                .setTitle("Choose color")
@@ -212,7 +212,7 @@ public class LightsListAdapter extends BaseAdapter {
 //                    @Override
 //                    public void onColorSelected(int selectedColor) {
 //                        rgbLightDto.setColor(selectedColor);
-//                        onLiveUpdate(rgbLightDto);
+//                        onLiveUpdateRGB(rgbLightDto);
 //                    }
 //                })
 //                .setPositiveButton("ok", new ColorPickerClickListener() {
@@ -234,13 +234,24 @@ public class LightsListAdapter extends BaseAdapter {
     }
 
 
-    public void onUpdate(LightDto updatedLight){
+    public void onUpdate(LightDto updatedLight) {
 
 
     }
 
-    public void onLiveUpdate(LightDto updatedLight){
+    public void onLiveUpdate(LightDto updatedLight) {
 
 
+    }
+
+    @Override
+    public void onUpdateRGB(RgbLightDto updatedLight) {
+        notifyDataSetChanged();
+        onUpdate(updatedLight);
+    }
+
+    @Override
+    public void onLiveUpdateRGB(RgbLightDto updatedLight) {
+        onLiveUpdate(updatedLight);
     }
 }

@@ -51,66 +51,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/selectorHolder">
 
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageButton"
-                    android:src="@mipmap/light_on" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/offHolder">
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageButton2"
-                    android:src="@mipmap/off" />
-            </LinearLayout>
-
-            <!--<Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/color_setter_select_controller_spinner"
-                android:theme="@style/Base.ThemeOverlay.AppCompat.Dark" />
-
-            <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/color_setter_select_light_spinner"
-                android:touchscreenBlocksFocus="false"
-                android:theme="@style/Base.ThemeOverlay.AppCompat.Dark" />-->
-
-            <!--<com.larswerkman.holocolorpicker.ColorPicker-->
-                <!--android:id="@+id/picker"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_horizontal" />-->
-            <!--<com.larswerkman.holocolorpicker.SVBar
-                android:id="@+id/svbar"
+            <com.larswerkman.holocolorpicker.ColorPicker
+                android:id="@+id/picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal" />-->
-            <!--<com.larswerkman.holocolorpicker.SaturationBar-->
-                <!--android:id="@+id/saturationbar"-->
+                android:layout_gravity="center_horizontal" />
+            <!--<com.larswerkman.holocolorpicker.SVBar-->
+                <!--android:id="@+id/svbar"-->
                 <!--android:layout_width="wrap_content"-->
                 <!--android:layout_height="wrap_content"-->
                 <!--android:layout_gravity="center_horizontal" />-->
-            <!--<com.larswerkman.holocolorpicker.ValueBar-->
-                <!--android:id="@+id/valuebar"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="15dp"-->
-                <!--android:layout_gravity="center_horizontal" />-->
+            <com.larswerkman.holocolorpicker.SaturationBar
+                android:id="@+id/saturationbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" />
+            <com.larswerkman.holocolorpicker.ValueBar
+                android:id="@+id/valuebar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center_horizontal" />
+
+            <Button
+                android:text="OK"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/color_picker_ok_button" />
 
             <TextView
                 android:layout_width="wrap_content"
