@@ -32,6 +32,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.support.annotation.ColorInt;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +44,7 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.flask.colorpicker.ColorPickerView;
-import com.flask.colorpicker.OnColorSelectedListener;
-import com.flask.colorpicker.builder.ColorPickerClickListener;
-import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
+
 
 import org.proto.led.controller.R;
 import org.proto.led.dto.DimmableLightDto;
@@ -53,6 +52,11 @@ import org.proto.led.dto.LightDto;
 import org.proto.led.dto.RgbLightDto;
 
 import java.util.ArrayList;
+
+import es.dmoral.coloromatic.ColorOMaticDialog;
+import es.dmoral.coloromatic.IndicatorMode;
+import es.dmoral.coloromatic.OnColorSelectedListener;
+import es.dmoral.coloromatic.colormode.ColorMode;
 
 import static android.R.attr.duration;
 
@@ -178,36 +182,55 @@ public class LightsListAdapter extends BaseAdapter {
 
     private void getColor(int color, final RgbLightDto rgbLightDto){
         int[] colors = new int[4];
-        ColorPickerDialogBuilder
-                .with(activity)
-                .setTitle("Choose color")
+
+         new ColorOMaticDialog.Builder()
                 .initialColor(color)
-                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
-                .density(12)
-                .lightnessSliderOnly()
-                .setOnColorSelectedListener(new OnColorSelectedListener() {
+                .colorMode(ColorMode.RGB) // RGB, ARGB, HVS
+                .indicatorMode(IndicatorMode.DECIMAL) // HEX or DECIMAL; Note that using HSV with IndicatorMode.HEX is not recommended
+                .onColorSelected(new OnColorSelectedListener() {
                     @Override
-                    public void onColorSelected(int selectedColor) {
-                        rgbLightDto.setColor(selectedColor);
-                        onLiveUpdate(rgbLightDto);
-                    }
-                })
-                .setPositiveButton("ok", new ColorPickerClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
-                        rgbLightDto.setColor(selectedColor);
+                    public void onColorSelected(@ColorInt int i) {
+//                        rgbLightDto.setColor(i);
+//                        onLiveUpdate(rgbLightDto);
+
+                        rgbLightDto.setColor(i);
                         notifyDataSetChanged();
                         onUpdate(rgbLightDto);
                     }
                 })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .build()
-                .show();
+                .showColorIndicator(true) // Default false, choose to show text indicator showing the current color in HEX or DEC (see images) or not
+                .create()
+                .show(((AppCompatActivity) activity).getSupportFragmentManager(), "ColorOMaticDialog");
+//        ColorPickerDialogBuilder
+//                .with(activity)
+//                .setTitle("Choose color")
+//                .initialColor(color)
+//                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+//                .density(12)
+//                .lightnessSliderOnly()
+//                .setOnColorSelectedListener(new OnColorSelectedListener() {
+//                    @Override
+//                    public void onColorSelected(int selectedColor) {
+//                        rgbLightDto.setColor(selectedColor);
+//                        onLiveUpdate(rgbLightDto);
+//                    }
+//                })
+//                .setPositiveButton("ok", new ColorPickerClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+//                        rgbLightDto.setColor(selectedColor);
+//                        notifyDataSetChanged();
+//                        onUpdate(rgbLightDto);
+//                    }
+//                })
+//                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                    }
+//                })
+//                .build()
+//                .show();
     }
 
 

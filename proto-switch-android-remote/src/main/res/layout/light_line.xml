@@ -58,6 +58,6 @@
         android:id="@+id/light_line_color_button"
         android:layout_weight="1"
         android:paddingBottom="@dimen/abc_control_padding_material"
-        android:paddingTop="@dimen/abc_dialog_list_padding_vertical_material"/>
+        android:paddingTop="8dp"/>
 
 </LinearLayout>

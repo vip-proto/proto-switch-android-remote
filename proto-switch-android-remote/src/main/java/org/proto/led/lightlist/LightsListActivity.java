@@ -48,6 +48,7 @@ import org.proto.led.network.WiFiControllerService;
 import org.proto.led.network.WifiController;
 import org.proto.led.storage.Storage;
 
+
 import java.util.ArrayList;
 
 public class LightsListActivity extends AppCompatActivity implements LightsListFragment.OnFragmentInteractionListener {
@@ -77,15 +78,15 @@ public class LightsListActivity extends AppCompatActivity implements LightsListF
 
     }
 
-    private void refreshListFromStorage(){
+    private void refreshListFromStorage() {
         lightsListFragment = getLightsFragment();
-        if(lightsListFragment.isAdded()){
+        if (lightsListFragment.isAdded()) {
             lightsListFragment.getView().setVisibility(View.VISIBLE);
         }
         getLightsFragment().displayData(Storage.loadLights(this));
     }
 
-    private LightsListFragment getLightsFragment(){
+    private LightsListFragment getLightsFragment() {
         return (LightsListFragment) getSupportFragmentManager().findFragmentById(R.id.lights_list_fragment);
     }
 
@@ -129,6 +130,7 @@ public class LightsListActivity extends AppCompatActivity implements LightsListF
     }
 
     public void onClick(View view) {
-        WifiController.startDiscovery(this);
+
+//        WifiController.startDiscovery(this);
     }
 }
