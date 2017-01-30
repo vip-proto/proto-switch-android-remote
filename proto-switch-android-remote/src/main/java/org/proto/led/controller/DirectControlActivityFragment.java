@@ -35,30 +35,27 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-//import com.larswerkman.holocolorpicker.ColorPicker;
-//import com.larswerkman.holocolorpicker.SaturationBar;
-//import com.larswerkman.holocolorpicker.ValueBar;
-
 import com.google.gson.Gson;
 import com.larswerkman.holocolorpicker.ColorPicker;
-import com.larswerkman.holocolorpicker.SVBar;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
 
 import org.proto.led.dto.RgbLightDto;
 
+//import com.larswerkman.holocolorpicker.ColorPicker;
+//import com.larswerkman.holocolorpicker.SaturationBar;
+//import com.larswerkman.holocolorpicker.ValueBar;
+
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DirectControlActivityFragment extends DialogFragment /*implements ColorPicker.OnColorChangedListener*/  {
+public class DirectControlActivityFragment extends DialogFragment /*implements ColorPicker.OnColorChangedListener*/ {
 
 
     private TextView textView;
@@ -69,25 +66,9 @@ public class DirectControlActivityFragment extends DialogFragment /*implements C
     int selectedColor = 0;
 
 
-    public DirectControlActivityFragment(){
+    public DirectControlActivityFragment() {
 
     }
-
-
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        return inflater.inflate(R.layout.fragment_direct_controll, container, false);
-//    }
-
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//
-//    }
-
-
-
 
     @Override
     public void onAttach(Context context) {
@@ -101,26 +82,23 @@ public class DirectControlActivityFragment extends DialogFragment /*implements C
         //-----------------------------------
         textView = (TextView) rootView.findViewById(R.id.textView);
         final ColorPicker picker = (ColorPicker) rootView.findViewById(R.id.picker);
-//        SVBar svBar = (SVBar) rootView.findViewById(R.id.svbar);
         final SaturationBar saturationBar = (SaturationBar) rootView.findViewById(R.id.saturationbar);
         saturationBar.setSaturation(1);
         final ValueBar valueBar = (ValueBar) rootView.findViewById(R.id.valuebar);
         saturationBar.setOnSaturationChangedListener(new SaturationBar.OnSaturationChangedListener() {
             @Override
             public void onSaturationChanged(int saturation) {
-//                valueBar.setColor(saturationBar.getColor());
-//                colorChanged(valueBar.getColor());
-//                picker.setNewCenterColor(valueBar.getColor());
-                Log.i(TAG, "1 saturation change" +  saturation  +  String.format("#%06X", (0xFFFFFF & saturationBar.getColor())));
+                Log.d(TAG, "1 saturation change" + saturation + String.format("#%06X", (0xFFFFFF & saturationBar.getColor())));
             }
         });
-        valueBar.setValue(1);
+        valueBar.setValue(1 / 64f * rgbLightDto.getIntensity());
         valueBar.setOnValueChangedListener(new ValueBar.OnValueChangedListener() {
             @Override
             public void onValueChanged(int value) {
-                Log.i(TAG, "2 value change " +  value  +  String.format("#%06X", (0xFFFFFF & value)));
-//                colorChanged(value);
-//                picker.setNewCenterColor(value);
+                Log.d(TAG, "2 value change " + value + String.format("#%06X", (0xFFFFFF & value)));
+                picker.setNewCenterColor(value);
+                colorChanged(valueBar.getColor());
+
             }
         });
 
@@ -132,63 +110,30 @@ public class DirectControlActivityFragment extends DialogFragment /*implements C
             }
         });
 
-//        picker.addSVBar(svBar);
         picker.addSaturationBar(saturationBar);
-        picker.addValueBar(valueBar);
 
-//To get the color
-//        picker.getColor();
-
-
-//To set the old selected color u can do it like this
-//        picker.setOldCenterColor(picker.getColor());
-// adds listener to the colorpicker which is implemented
-//in the activity
-//        picker.setOnColorChangedListener(this);
-
-
-//to turn of showing the old color
         picker.setShowOldCenterColor(false);
         picker.setTouchAnywhereOnColorWheelEnabled(true);
         picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
             @Override
             public void onColorChanged(int color) {
-                Log.i(TAG, "3 color change " +  String.format("#%06X", (0xFFFFFF & color)));
-                Log.i(TAG, "color from get: "+  String.format("#%06X", (0xFFFFFF & color)) + " Pic " +String.format("#%06X", (0xFFFFFF & picker.getColor())) + " val " + String.format("#%06X", (0xFFFFFF & valueBar.getColor())) + " sat " + String.format("#%06X", (0xFFFFFF & saturationBar.getColor())));
-//                saturationBar.setColor(color);
-//                valueBar.setColor(saturationBar.getColor());
-//                colorChanged(valueBar.getColor());
-//                if (picker.getColor() == valueBar.getColor() ) {
-//                    Log.i(TAG, "picker==value");
-//                    colorChanged(valueBar.getColor());
-//                }else if(valueBar.getColor() == saturationBar.getColor()){
-//                    Log.i(TAG, "valueBar==saturationBar");
-//                    colorChanged(valueBar.getColor());
-//                } else if(picker.getColor() ==saturationBar.getColor() ){
-//                    Log.i(TAG, "picker==saturationBar");
-//                    colorChanged(picker.getColor());
-//                }
-                colorChanged(saturationBar.getColor());
-                Log.i(TAG,"----------------");
+                Log.d(TAG, "3 color change " + String.format("#%06X", (0xFFFFFF & color)));
+                Log.d(TAG, "color from get: " + String.format("#%06X", (0xFFFFFF & color)) + " Pic " + String.format("#%06X", (0xFFFFFF & picker.getColor())) + " val " + String.format("#%06X", (0xFFFFFF & valueBar.getColor())) + " sat " + String.format("#%06X", (0xFFFFFF & saturationBar.getColor())));
+                valueBar.setColor(saturationBar.getColor());
+                colorChanged(valueBar.getColor());
+                Log.d(TAG, "----------------");
             }
         });
         picker.setOnColorSelectedListener(new ColorPicker.OnColorSelectedListener() {
             @Override
             public void onColorSelected(int color) {
-                colorChanged(color);
+                colorChanged(valueBar.getColor());
             }
 
         });
 
         picker.setColor(rgbLightDto.calculateColor());
 
-//adding onChangeListeners to bars
-//		opacityBar.setOnOpacityChangeListener(new OpacityBar.OnOpacityChangedListener() {
-//												  @Override
-//												  public void onOpacityChanged(int opacity) {
-//
-//												  }
-//											  });
     }
 
     @Override
@@ -212,6 +157,7 @@ public class DirectControlActivityFragment extends DialogFragment /*implements C
         textView.setText(hexColor + " " + rgbLightDto.getRedValue() + " " + rgbLightDto.getGreenValue() + " " + rgbLightDto.getBlueValue());
         mListener.onLiveUpdateRGB(rgbLightDto);
     }
+
     private void colorSelected(int color) {
         String hexColor = String.format("#%06X", (0xFFFFFF & color));
         Log.i(TAG, "colorSelected: " + hexColor);
@@ -221,14 +167,6 @@ public class DirectControlActivityFragment extends DialogFragment /*implements C
         dismiss();
     }
 
-//				valueBar.setOnValueChangeListener(new NumberPicker.OnValueChangeListener …)
-//				saturationBar.setOnSaturationChangeListener(new OnSaturationChangeListener …)
-
-
-//    @Override
-//    public void onColorChanged(int color) {
-//
-//    }
 
     public static DirectControlActivityFragment newInstance(RgbLightDto rgbLightDto) {
         Bundle args = new Bundle();
@@ -259,7 +197,7 @@ public class DirectControlActivityFragment extends DialogFragment /*implements C
         private OnFragmentInteractionListener onFragmentInteractionListener;
 
 
-        public Builder setSelectedColor( RgbLightDto selectedColor) {
+        public Builder setSelectedColor(RgbLightDto selectedColor) {
             this.selectedColor = selectedColor;
             return this;
         }

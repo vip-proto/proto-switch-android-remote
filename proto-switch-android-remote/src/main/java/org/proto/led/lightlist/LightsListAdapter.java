@@ -29,21 +29,14 @@ package org.proto.led.lightlist;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.support.annotation.ColorInt;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
-import android.widget.Toast;
 import android.widget.ToggleButton;
-
 
 import org.proto.led.controller.DirectControlActivityFragment;
 import org.proto.led.controller.R;
@@ -109,13 +102,7 @@ public class LightsListAdapter extends BaseAdapter implements DirectControlActiv
                 }
             }
         });
-//        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                light.setOn(isChecked);
-//
-//            }
-//        });
+
         if (light instanceof DimmableLightDto) {
             final DimmableLightDto dimmableLightDto = (DimmableLightDto) light;
             seekBar.setProgress(dimmableLightDto.getIntensity());
@@ -182,55 +169,6 @@ public class LightsListAdapter extends BaseAdapter implements DirectControlActiv
                 .setSelectedColor(rgbLightDto)
                 .setOnFragmentInteractionListener(this)
                 .show();
-//
-//         new ColorOMaticDialog.Builder()
-//                .initialColor(color)
-//                .colorMode(ColorMode.RGB) // RGB, ARGB, HVS
-//                .indicatorMode(IndicatorMode.DECIMAL) // HEX or DECIMAL; Note that using HSV with IndicatorMode.HEX is not recommended
-//                .onColorSelected(new OnColorSelectedListener() {
-//                    @Override
-//                    public void onColorSelected(@ColorInt int i) {
-////                        rgbLightDto.setColor(i);
-////                        onLiveUpdateRGB(rgbLightDto);
-//
-//                        rgbLightDto.setColor(i);
-//                        notifyDataSetChanged();
-//                        onUpdate(rgbLightDto);
-//                    }
-//                })
-//                .showColorIndicator(true) // Default false, choose to show text indicator showing the current color in HEX or DEC (see images) or not
-//                .create()
-//                .show(((AppCompatActivity) activity).getSupportFragmentManager(), "ColorOMaticDialog");
-//        ColorPickerDialogBuilder
-//                .with(activity)
-//                .setTitle("Choose color")
-//                .initialColor(color)
-//                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
-//                .density(12)
-//                .lightnessSliderOnly()
-//                .setOnColorSelectedListener(new OnColorSelectedListener() {
-//                    @Override
-//                    public void onColorSelected(int selectedColor) {
-//                        rgbLightDto.setColor(selectedColor);
-//                        onLiveUpdateRGB(rgbLightDto);
-//                    }
-//                })
-//                .setPositiveButton("ok", new ColorPickerClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
-//                        rgbLightDto.setColor(selectedColor);
-//                        notifyDataSetChanged();
-//                        onUpdate(rgbLightDto);
-//                    }
-//                })
-//                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                    }
-//                })
-//                .build()
-//                .show();
     }
 
 
