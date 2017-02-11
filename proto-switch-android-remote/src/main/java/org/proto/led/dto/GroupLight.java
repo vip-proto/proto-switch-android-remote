@@ -33,7 +33,7 @@ import java.util.List;
  * Created by Predrag on 10.2.2017..
  */
 
-public interface GroupLight {
+public interface GroupLight extends Light {
 
 
     List<LightDto> getLights();

@@ -31,7 +31,7 @@ package org.proto.led.dto;
  * Created by Predrag on 15.10.2016..
  */
 
-public class LightDto {
+public class LightDto implements Light {
     public static String LIGHT = "LightDto";
     public static String DIMMABLE_LIGHT = "DimmableLightDto";
     public static String RGB_LIGHT = "RgbLightDto";
@@ -49,18 +49,22 @@ public class LightDto {
         this.controllerDto = controllerDto;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public boolean isOn() {
         return on;
     }
 
+    @Override
     public void setOn(boolean on) {
         this.on = on;
     }
@@ -73,6 +77,7 @@ public class LightDto {
         this.channel = channel;
     }
 
+    @Override
     public String getType() {
         return type;
     }

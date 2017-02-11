@@ -36,6 +36,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.proto.led.controller.R;
+import org.proto.led.dto.Light;
 import org.proto.led.dto.LightDto;
 import org.proto.led.lightlist.LightsListAdapter;
 
@@ -168,7 +169,7 @@ public class LightsListFragment extends Fragment {
         listView.setAdapter(lightsListAdapter);
     }
 
-    public void displayData(ArrayList<LightDto> lightDtos) {
+    public void displayData(ArrayList<Light> lightDtos) {
         lightsListAdapter.getData().clear();
         lightsListAdapter.getData().addAll(lightDtos);
         lightsListAdapter.notifyDataSetChanged();

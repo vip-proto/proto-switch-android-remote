@@ -50,7 +50,7 @@ public class GroupLightDto extends LightDto implements GroupLight {
 
     @Override
     public void setOn(boolean on) {
-        for (LightDto light : lights) {
+        for (Light light : lights) {
             light.setOn(on);
         }
     }
@@ -59,7 +59,7 @@ public class GroupLightDto extends LightDto implements GroupLight {
     public boolean isOn() {
         boolean on = false;
         if (lights != null) {
-            for (LightDto light : lights) {
+            for (Light light : lights) {
                 on = on || light.isOn();
             }
         }

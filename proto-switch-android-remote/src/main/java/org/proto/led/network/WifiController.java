@@ -72,8 +72,11 @@ public class WifiController {
         new MakeUDPBroadcastRequest(6000, command, context).execute();
     }
 
-    public static void setAllLights(LightDto... allLights) {
+    public static void setAllLights(Context context, LightDto... allLights) {
     //TODO: treba da se napravi da ih sve setuje odjednom po kontroleru. mozda bi gornja metoda mogla da vraca niz komandi koji bi se dodatno azurirao kad se naidje na svetlo na istom kontroleru.
+        for (LightDto light : allLights) {
+            setLight(context, light);
+        }
     }
 
 //    public void sendCommandToController(RgbLightDto... selectedLight) {

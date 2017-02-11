@@ -37,6 +37,9 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -49,8 +52,10 @@ import org.proto.led.dto.GroupDimmableDto;
 import org.proto.led.dto.GroupLight;
 import org.proto.led.dto.GroupLightDto;
 import org.proto.led.dto.GroupRgbLightDto;
+import org.proto.led.dto.Light;
 import org.proto.led.dto.LightDto;
 import org.proto.led.dto.RgbLightDto;
+import org.proto.led.groups.GroupsListActivity;
 import org.proto.led.lightlist.fragment.LightsListFragment;
 import org.proto.led.network.WiFiControllerService;
 import org.proto.led.network.WifiController;
@@ -114,6 +119,32 @@ public class LightsListActivity extends AppCompatActivity implements LightsListF
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_lights, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_lights_create_group:
+                alertMultipleChoiceItems();
+                return true;
+            case R.id.menu_lights_discover:
+                WifiController.startDiscovery(this);
+                return true;
+            case R.id.menu_lights_groups:
+                displayGroups();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    @Override
     public void onLightChange(LightDto light) {
         onLightLiveChange(light);
         Storage.updateLights(this, light);
@@ -146,17 +177,14 @@ public class LightsListActivity extends AppCompatActivity implements LightsListF
         toast.show();
     }
 
-    public void onClick(View view) {
 
-        WifiController.startDiscovery(this);
-    }
-
-    public void onClick2(View view) {
-        alertMultipleChoiceItems();
+    private void displayGroups() {
+        Intent intent = new Intent(this, GroupsListActivity.class);
+        startActivity(intent);
     }
 
     private String[] getLightNames() {
-        ArrayList<LightDto> lightDtos = Storage.loadLights(this);
+        ArrayList<Light> lightDtos = Storage.loadLights(this);
         String[] strings = new String[lightDtos.size()];
         for (int i = 0; i < lightDtos.size(); i++) {
             strings[i] = lightDtos.get(i).getName();
@@ -268,14 +296,14 @@ public class LightsListActivity extends AppCompatActivity implements LightsListF
     }
 
     private void createAndStoreGroup(String groupName) {
-        ArrayList<LightDto> lightDtos = Storage.loadLights(this);
+        ArrayList<Light> lightDtos = Storage.loadLights(this);
         ArrayList<LightDto> selectedLights = new ArrayList<>();
 
         int lightCount = 0;
         int dimmableCount = 0;
         for (Integer mSelectedItem : mSelectedItems) {
-            LightDto lightDto = lightDtos.get(mSelectedItem);
-            selectedLights.add(lightDto);
+            Light lightDto = lightDtos.get(mSelectedItem);
+            selectedLights.add((LightDto) lightDto);
             if (!(lightDto instanceof RgbLightDto)) {
                 if (lightDto instanceof DimmableLightDto) {
                     dimmableCount++;
@@ -299,9 +327,13 @@ public class LightsListActivity extends AppCompatActivity implements LightsListF
             groupRgbLightDto.setName(groupName);
             groupLight = groupRgbLightDto;
         }
+
+
         groupLight.setLights(selectedLights);
         Storage.updateGroupLights(this, groupLight);
         ArrayList<GroupLight> groupLights = Storage.loadGroupLights(this);
         Log.i(TAG, "Loaded groups " + groupLights);
     }
+
+
 }

@@ -66,7 +66,7 @@ public class GroupRgbLightDto extends RgbLightDto implements GroupLight {
     }
 
     private void copyToLights() {
-        for (LightDto light : lights) {
+        for (Light light : lights) {
             RgbLightDto rgbLightDto = (RgbLightDto) light;
             rgbLightDto.setIntensity(super.getIntensity());
             rgbLightDto.setOn(super.isOn());

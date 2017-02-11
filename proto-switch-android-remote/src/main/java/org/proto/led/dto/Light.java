@@ -27,43 +27,18 @@
 
 package org.proto.led.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Created by Predrag on 10.2.2017..
+ * Created by Predrag on 11.2.2017..
  */
 
-public class GroupDimmableDto extends DimmableLightDto implements GroupLight {
-    private List<LightDto> lights = new ArrayList<>();
+public interface Light {
+    String getName();
 
-    @Override
-    public List<LightDto> getLights() {
-        return lights;
-    }
+    void setName(String name);
 
-    @Override
-    public void setLights(List<LightDto> lights) {
-        this.lights = lights;
-    }
+    boolean isOn();
 
-    @Override
-    public void setOn(boolean on) {
-        super.setOn(on);
-        copyToLights();
-    }
+    void setOn(boolean on);
 
-    @Override
-    public void setIntensity(int intensity) {
-        super.setIntensity(intensity);
-        copyToLights();
-    }
-
-    private void copyToLights() {
-        for (Light light : lights) {
-            DimmableLightDto dimmableLightDto = (DimmableLightDto) light;
-            dimmableLightDto.setIntensity(super.getIntensity());
-            dimmableLightDto.setOn(super.isOn());
-        }
-    }
+    String getType();
 }

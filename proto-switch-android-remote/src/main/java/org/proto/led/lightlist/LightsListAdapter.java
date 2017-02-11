@@ -41,6 +41,7 @@ import android.widget.ToggleButton;
 import org.proto.led.controller.DirectControlActivityFragment;
 import org.proto.led.controller.R;
 import org.proto.led.dto.DimmableLightDto;
+import org.proto.led.dto.Light;
 import org.proto.led.dto.LightDto;
 import org.proto.led.dto.RgbLightDto;
 
@@ -54,7 +55,7 @@ import java.util.ArrayList;
 public class LightsListAdapter extends BaseAdapter implements DirectControlActivityFragment.OnFragmentInteractionListener {
 
     private Activity activity;
-    private ArrayList<LightDto> data = new ArrayList<LightDto>();
+    private ArrayList<Light> data = new ArrayList<Light>();
     private static LayoutInflater inflater = null;
 
     public LightsListAdapter(Activity a) {
@@ -158,7 +159,7 @@ public class LightsListAdapter extends BaseAdapter implements DirectControlActiv
         drawable.setColor(color);
     }
 
-    public ArrayList<LightDto> getData() {
+    public ArrayList<Light> getData() {
         return data;
     }
 

@@ -87,7 +87,17 @@
         <service
             android:name="org.proto.led.network.WiFiControllerService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity
+            android:name="org.proto.led.groups.GroupsListActivity"
+            android:label="@string/title_activity_groups_list"
+            android:parentActivityName="org.proto.led.lightlist.LightsListActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.proto.led.lightlist.LightsListActivity" />
+        </activity>
     </application>
 
 </manifest>

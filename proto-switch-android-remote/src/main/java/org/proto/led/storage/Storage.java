@@ -39,6 +39,7 @@ import org.proto.led.dto.ControllerDto;
 import org.proto.led.dto.DimmableLightDto;
 import org.proto.led.dto.GroupLight;
 import org.proto.led.dto.GroupRgbLightDto;
+import org.proto.led.dto.Light;
 import org.proto.led.dto.LightDto;
 import org.proto.led.dto.RgbLightDto;
 import org.proto.led.dto.ThemeDto;
@@ -54,7 +55,7 @@ public class Storage {
     private static final String TAG = "Storage";
     private static final String PREFERENCES = "PREFERENCES";
 
-    public static void storeLights(Context context, ArrayList<LightDto> lights) {
+    public static void storeLights(Context context, ArrayList<Light> lights) {
         long start = System.currentTimeMillis();
         Gson gson = new Gson();
         String json = gson.toJson(lights);
@@ -68,7 +69,7 @@ public class Storage {
 
     }
 
-    public static ArrayList<LightDto> loadLights(Context context) {
+    public static ArrayList<Light> loadLights(Context context) {
         long start = System.currentTimeMillis();
         SharedPreferences sharedPref = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         String json = sharedPref.getString(context.getString(R.string.preference_whole_model), "");
@@ -77,7 +78,7 @@ public class Storage {
         }.getType();
 
         ArrayList<RgbLightDto> lightsRow = new Gson().fromJson(json, listType);
-        ArrayList<LightDto> lights = new ArrayList<LightDto>();
+        ArrayList<Light> lights = new ArrayList<Light>();
         Log.i(TAG, "lightsRow.size() = " + (lightsRow != null ? lightsRow.size() : "null"));
         if (lightsRow != null) {
             for (RgbLightDto rgbLightDto : lightsRow) {
@@ -191,7 +192,7 @@ public class Storage {
     }
 
     public static void updateLights(Context context, LightDto... selectedLight) {
-        ArrayList<LightDto> lights = loadLights(context);
+        ArrayList<Light> lights = loadLights(context);
 
 //		LinkedHashSet<LightDto> lightsSet = new LinkedHashSet<LightDto>(lights);
         for (LightDto lightDto : selectedLight) {
@@ -212,14 +213,14 @@ public class Storage {
 
     public static ArrayList<ThemeDto> loadThemes(Context context) {
         ArrayList<ThemeDto> themes = new ArrayList<ThemeDto>();
-        ThemeDto theme1 = new ThemeDto();
-        theme1.setName("Movie");
-        theme1.setLights(loadLights(context));
-        themes.add(theme1);
-        ThemeDto theme2 = new ThemeDto();
-        theme2.setName("Party");
-        theme2.setLights(loadLights(context));
-        themes.add(theme2);
+//        ThemeDto theme1 = new ThemeDto();
+//        theme1.setName("Movie");
+//        theme1.setLights(loadLights(context));
+//        themes.add(theme1);
+//        ThemeDto theme2 = new ThemeDto();
+//        theme2.setName("Party");
+//        theme2.setLights(loadLights(context));
+//        themes.add(theme2);
         return themes;
     }
 
@@ -284,14 +285,14 @@ public class Storage {
                 }
             }
 
-            ArrayList<LightDto> lightDtos = loadLights(context);
+            ArrayList<Light> lightDtos = loadLights(context);
             for (GroupLight group : groups) {
-                List<LightDto> lights = group.getLights();
+                List<LightDto> groupLights = group.getLights();
                 ArrayList<LightDto> currentLights = new ArrayList<>();
-                for (LightDto light : lights) {
-                    for (LightDto lightDto : lightDtos) {
-                        if (lightDto.getName().equals(light.getName())) {
-                            currentLights.add(lightDto);
+                for (Light groupLight : groupLights) {
+                    for (Light lightDto : lightDtos) {
+                        if (lightDto.getName().equals(groupLight.getName())) {
+                            currentLights.add((LightDto) lightDto);
                         }
                     }
                 }
