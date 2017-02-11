@@ -27,27 +27,34 @@
 
 package org.proto.led.lightlist;
 
-import android.app.Fragment;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import org.proto.led.controller.R;
 import org.proto.led.dto.DimmableLightDto;
+import org.proto.led.dto.GroupDimmableDto;
+import org.proto.led.dto.GroupLight;
+import org.proto.led.dto.GroupLightDto;
+import org.proto.led.dto.GroupRgbLightDto;
 import org.proto.led.dto.LightDto;
 import org.proto.led.dto.RgbLightDto;
 import org.proto.led.lightlist.fragment.LightsListFragment;
 import org.proto.led.network.WiFiControllerService;
 import org.proto.led.network.WifiController;
 import org.proto.led.storage.Storage;
-
 
 import java.util.ArrayList;
 
@@ -60,6 +67,7 @@ public class LightsListActivity extends AppCompatActivity implements LightsListF
     private static String TAG = "LightsListActivity";
     private LightsListFragment lightsListFragment;
     private BroadcastReceiver receiver;
+    private ArrayList<Integer> mSelectedItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +76,18 @@ public class LightsListActivity extends AppCompatActivity implements LightsListF
         lightsListFragment = getLightsFragment();
         Intent intent = new Intent(this, WiFiControllerService.class);
         startService(intent);
-
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                refreshListFromStorage();
-            }
-        };
-
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter(WiFiControllerService.INTENT_LIGHTS_UPDATED));
     }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            refreshListFromStorage();
+            Log.d("receiver", "Got message: ");
+        }
+    };
 
     private void refreshListFromStorage() {
         lightsListFragment = getLightsFragment();
@@ -94,6 +105,12 @@ public class LightsListActivity extends AppCompatActivity implements LightsListF
     protected void onResume() {
         super.onResume();
         refreshListFromStorage();
+    }
+
+    @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
     }
 
     @Override
@@ -131,6 +148,160 @@ public class LightsListActivity extends AppCompatActivity implements LightsListF
 
     public void onClick(View view) {
 
-//        WifiController.startDiscovery(this);
+        WifiController.startDiscovery(this);
+    }
+
+    public void onClick2(View view) {
+        alertMultipleChoiceItems();
+    }
+
+    private String[] getLightNames() {
+        ArrayList<LightDto> lightDtos = Storage.loadLights(this);
+        String[] strings = new String[lightDtos.size()];
+        for (int i = 0; i < lightDtos.size(); i++) {
+            strings[i] = lightDtos.get(i).getName();
+        }
+        return strings;
+    }
+
+    public void alertMultipleChoiceItems() {
+
+        // where we will store or remove selected items
+        mSelectedItems = new ArrayList<Integer>();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        // set the dialog title
+        builder.setTitle("Choose One or More")
+
+                // specify the list array, the items to be selected by default (null for none),
+                // and the listener through which to receive call backs when items are selected
+                // R.array.choices were set in the resources res/values/strings.xml
+                .setMultiChoiceItems(getLightNames(), null, new DialogInterface.OnMultiChoiceClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+                        if (isChecked) {
+                            // if the user checked the item, add it to the selected items
+                            mSelectedItems.add(which);
+                        } else if (mSelectedItems.contains(which)) {
+                            // else if the item is already in the array, remove it
+                            mSelectedItems.remove(Integer.valueOf(which));
+                        }
+
+                        // you can also add other codes here,
+                        // for example a tool tip that gives user an idea of what he is selecting
+                        // showToast("Just an example description.");
+                    }
+
+                })
+
+                // Set the action buttons
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        // user clicked OK, so save the mSelectedItems results somewhere
+                        // here we are trying to retrieve the selected items indices
+                        String selectedIndex = "";
+                        for (Integer i : mSelectedItems) {
+                            selectedIndex += i + ", ";
+                        }
+                        alertEditTextKeyboardShown();
+                        toast("Selected index: " + selectedIndex);
+
+                    }
+                })
+
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        // removes the AlertDialog in the screen
+                    }
+                })
+
+                .show();
+
+    }
+
+    public void alertEditTextKeyboardShown() {
+
+        // creating the EditText widget programatically
+        final EditText editText = new EditText(this);
+
+        // create the AlertDialog as final
+        final AlertDialog dialog = new AlertDialog.Builder(this)
+                .setMessage("Group name")
+                .setTitle("Group")
+                .setView(editText)
+
+                // Set the action buttons
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        createAndStoreGroup(editText.getText().toString());
+                    }
+                })
+
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        // removes the AlertDialog in the screen
+                    }
+                })
+                .create();
+
+        // set the focus change listener of the EditText
+        // this part will make the soft keyboard automaticall visible
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
+            }
+        });
+
+        dialog.show();
+
+    }
+
+    private void createAndStoreGroup(String groupName) {
+        ArrayList<LightDto> lightDtos = Storage.loadLights(this);
+        ArrayList<LightDto> selectedLights = new ArrayList<>();
+
+        int lightCount = 0;
+        int dimmableCount = 0;
+        for (Integer mSelectedItem : mSelectedItems) {
+            LightDto lightDto = lightDtos.get(mSelectedItem);
+            selectedLights.add(lightDto);
+            if (!(lightDto instanceof RgbLightDto)) {
+                if (lightDto instanceof DimmableLightDto) {
+                    dimmableCount++;
+                } else {
+                    lightCount++;
+                }
+            }
+        }
+
+        GroupLight groupLight;
+        if (lightCount > 0) {
+            GroupLightDto groupLight1 = new GroupLightDto();
+            groupLight1.setName(groupName);
+            groupLight = groupLight1;
+        } else if (dimmableCount > 0) {
+            GroupDimmableDto groupDimmableDto = new GroupDimmableDto();
+            groupDimmableDto.setName(groupName);
+            groupLight = groupDimmableDto;
+        } else {
+            GroupRgbLightDto groupRgbLightDto = new GroupRgbLightDto();
+            groupRgbLightDto.setName(groupName);
+            groupLight = groupRgbLightDto;
+        }
+        groupLight.setLights(selectedLights);
+        Storage.updateGroupLights(this, groupLight);
+        ArrayList<GroupLight> groupLights = Storage.loadGroupLights(this);
+        Log.i(TAG, "Loaded groups " + groupLights);
     }
 }

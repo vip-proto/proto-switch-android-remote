@@ -37,13 +37,15 @@ import com.google.gson.reflect.TypeToken;
 import org.proto.led.controller.R;
 import org.proto.led.dto.ControllerDto;
 import org.proto.led.dto.DimmableLightDto;
+import org.proto.led.dto.GroupLight;
+import org.proto.led.dto.GroupRgbLightDto;
 import org.proto.led.dto.LightDto;
 import org.proto.led.dto.RgbLightDto;
 import org.proto.led.dto.ThemeDto;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  * Created by Predrag Milutinovic on 19.3.2016..
@@ -77,9 +79,7 @@ public class Storage {
         ArrayList<RgbLightDto> lightsRow = new Gson().fromJson(json, listType);
         ArrayList<LightDto> lights = new ArrayList<LightDto>();
         Log.i(TAG, "lightsRow.size() = " + (lightsRow != null ? lightsRow.size() : "null"));
-        if (lightsRow == null || lightsRow.size() == 0) {
-            lights = initLights();
-        } else {
+        if (lightsRow != null) {
             for (RgbLightDto rgbLightDto : lightsRow) {
                 if (rgbLightDto.getType().equals(LightDto.RGB_LIGHT)) {
                     lights.add(rgbLightDto);
@@ -235,4 +235,73 @@ public class Storage {
 
     }
 
+    public static void storeGroupLight(Context context, ArrayList<GroupLight> groupLights) {
+        long start = System.currentTimeMillis();
+        Gson gson = new Gson();
+        String json = gson.toJson(groupLights);
+        SharedPreferences sharedPref = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(context.getString(R.string.preference_groups), json);
+        editor.commit();
+        long end = System.currentTimeMillis();
+
+        Log.i(TAG, "saving lights time = " + (end - start) + "ms");
+
+    }
+
+    public static void updateGroupLights(Context context, GroupLight groupLight) {
+        ArrayList<GroupLight> groups = loadGroupLights(context);
+
+        int indexOf = groups.indexOf(groupLight);
+        if (indexOf != -1) {
+            groups.remove(indexOf);
+            groups.add(indexOf, groupLight);
+        } else {
+            groups.add(groupLight);
+        }
+        storeGroupLight(context, groups);
+    }
+
+    public static ArrayList<GroupLight> loadGroupLights(Context context) {
+        long start = System.currentTimeMillis();
+        SharedPreferences sharedPref = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        String json = sharedPref.getString(context.getString(R.string.preference_groups), "");
+        Log.d(TAG, "groups json = " + json);
+        Type listType = new TypeToken<ArrayList<GroupRgbLightDto>>() {
+        }.getType();
+
+        ArrayList<GroupRgbLightDto> groupRow = new Gson().fromJson(json, listType);
+        ArrayList<GroupLight> groups = new ArrayList<GroupLight>();
+        Log.i(TAG, "groupRow.size() = " + (groupRow != null ? groupRow.size() : "null"));
+        if (groupRow != null) {
+            for (GroupRgbLightDto rgbLightDto : groupRow) {
+                if (rgbLightDto.getType().equals(LightDto.RGB_LIGHT)) {
+                    groups.add(rgbLightDto);
+                } else if (rgbLightDto.getType().equals(LightDto.DIMMABLE_LIGHT)) {
+                    groups.add(rgbLightDto.toGroupDimmableLightDto());
+                } else {
+                    groups.add(rgbLightDto.toGroupLightDto());
+                }
+            }
+
+            ArrayList<LightDto> lightDtos = loadLights(context);
+            for (GroupLight group : groups) {
+                List<LightDto> lights = group.getLights();
+                ArrayList<LightDto> currentLights = new ArrayList<>();
+                for (LightDto light : lights) {
+                    for (LightDto lightDto : lightDtos) {
+                        if (lightDto.getName().equals(light.getName())) {
+                            currentLights.add(lightDto);
+                        }
+                    }
+                }
+                group.setLights(currentLights);
+            }
+        }
+
+        long end = System.currentTimeMillis();
+
+        Log.i(TAG, "loading time = " + (end - start) + "ms");
+        return groups;
+    }
 }

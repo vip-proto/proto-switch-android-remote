@@ -51,6 +51,13 @@
         android:id="@+id/button"
         android:onClick="onClick"/>
 
+    <Button
+        android:text="Pravi grupe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2"
+        android:onClick="onClick2" />
+
 
     <!--<ListView-->
         <!--android:id="@+id/lights_list_list"-->

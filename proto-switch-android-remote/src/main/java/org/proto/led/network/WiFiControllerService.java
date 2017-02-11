@@ -29,7 +29,9 @@ package org.proto.led.network;
 
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.proto.led.dto.ControllerDto;
@@ -47,6 +49,7 @@ import java.util.ArrayList;
 public class WiFiControllerService extends Service {
 
 
+    public static final String INTENT_LIGHTS_UPDATED = "INTENT_LIGHTS_UPDATED";
     public WiFiControllerService() {
     }
 
@@ -77,7 +80,7 @@ public class WiFiControllerService extends Service {
         String senderIP = packet.getAddress().getHostAddress();
         parseMessage(recvBuf, senderIP);
         String message = new String(packet.getData()).trim();
-        Log.i(TAG, "Got UDB broadcast from " + senderIP + ", message: " + message);
+        Log.i(TAG, "Got UDP broadcast from " + senderIP + ", message: " + message);
 
         socket.close();
     }
@@ -103,8 +106,13 @@ public class WiFiControllerService extends Service {
             light.setControllerDto(controllerDto);
             Storage.updateLights(this, light);
         }
+        broadcustMessage();
     }
 
+    private void broadcustMessage() {
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+        broadcastManager.sendBroadcast(new Intent(INTENT_LIGHTS_UPDATED));
+    }
     private ArrayList<LightDto> parseLights(byte[] b, int numberOfLights) {
         int startOfLight = 48;
         ArrayList<LightDto> lights = new ArrayList<>();
@@ -122,12 +130,11 @@ public class WiFiControllerService extends Service {
                     break;
                 case 2: // RGB
                     RgbLightDto rgbLightDto = new RgbLightDto();
+                    int rgb = Color.rgb(b[startOfLight + 32 + 2] * 4, b[startOfLight + 32 + 4] * 4, b[startOfLight + 32 + 6] * 4);
+                    rgbLightDto.setColor(rgb);
                     rgbLightDto.setRedChannel(b[startOfLight + 32 + 1]);
-                    rgbLightDto.setRedValue(b[startOfLight + 32 + 2]);
                     rgbLightDto.setGreenChannel(b[startOfLight + 32 + 3]);
-                    rgbLightDto.setGreenValue(b[startOfLight + 32 + 4]);
                     rgbLightDto.setBlueChannel(b[startOfLight + 32 + 5]);
-                    rgbLightDto.setBlueValue(b[startOfLight + 32 + 6]);
                     rgbLightDto.setOn(rgbLightDto.getRedValue() > 0 || rgbLightDto.getGreenValue() > 0 || rgbLightDto.getBlueValue() > 0);
                     parsedLight = rgbLightDto;
                     startOfLight = startOfLight + 32 + 6 + 1;

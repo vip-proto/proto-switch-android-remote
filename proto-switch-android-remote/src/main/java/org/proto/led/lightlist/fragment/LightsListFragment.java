@@ -28,7 +28,6 @@
 package org.proto.led.lightlist.fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -39,7 +38,6 @@ import android.widget.ListView;
 import org.proto.led.controller.R;
 import org.proto.led.dto.LightDto;
 import org.proto.led.lightlist.LightsListAdapter;
-import org.proto.led.storage.Storage;
 
 import java.util.ArrayList;
 
@@ -173,5 +171,6 @@ public class LightsListFragment extends Fragment {
     public void displayData(ArrayList<LightDto> lightDtos) {
         lightsListAdapter.getData().clear();
         lightsListAdapter.getData().addAll(lightDtos);
+        lightsListAdapter.notifyDataSetChanged();
     }
 }
