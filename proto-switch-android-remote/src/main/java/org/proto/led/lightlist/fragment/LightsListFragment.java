@@ -149,6 +149,8 @@ public class LightsListFragment extends Fragment {
         void onLightChange(LightDto light);
         // on light liv change
         void onLightLiveChange(LightDto light);
+
+        void onDeleteLight(LightDto deletedLight);
     }
 
     private void setupChildren() {
@@ -164,6 +166,11 @@ public class LightsListFragment extends Fragment {
             @Override
             public void onLiveUpdate(LightDto updatedLight) {
                 mListener.onLightLiveChange(updatedLight);
+            }
+
+            @Override
+            public void onDelete(LightDto deletedLight) {
+                mListener.onDeleteLight(deletedLight);
             }
         };
         listView.setAdapter(lightsListAdapter);

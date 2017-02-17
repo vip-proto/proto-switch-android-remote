@@ -45,6 +45,16 @@ public class GroupDimmableDto extends DimmableLightDto implements GroupLight {
     @Override
     public void setLights(List<LightDto> lights) {
         this.lights = lights;
+        if (lights != null) {
+            int max = 0;
+            for (Light light : lights) {
+                if (light instanceof DimmableLightDto) {
+                    DimmableLightDto dimmableLightDto = (DimmableLightDto) light;
+                    max = Math.max(max, dimmableLightDto.getIntensity());
+                }
+            }
+            super.setIntensity(max);
+        }
     }
 
     @Override
@@ -58,6 +68,19 @@ public class GroupDimmableDto extends DimmableLightDto implements GroupLight {
         super.setIntensity(intensity);
         copyToLights();
     }
+
+    @Override
+    public boolean isOn() {
+        boolean on = false;
+        if (lights != null) {
+            for (Light light : lights) {
+                on = on || light.isOn();
+            }
+        }
+        return on;
+    }
+
+
 
     private void copyToLights() {
         for (Light light : lights) {

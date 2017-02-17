@@ -87,7 +87,7 @@ public class RgbLightDto extends DimmableLightDto {
     }
 
     public int getCalculatedGreenValue() {
-        return greenValue * getIntensity() / 64*(isOn()?1:0);
+        return greenValue * getIntensity() / 64 * (isOn() ? 1 : 0) * 46 / 64;
     }
 
 
@@ -100,7 +100,7 @@ public class RgbLightDto extends DimmableLightDto {
     }
 
     public int getCalculatedBlueValue() {
-        return blueValue * getIntensity() / 64*(isOn()?1:0);
+        return blueValue * getIntensity() / 64 * (isOn() ? 1 : 0) * 33 / 64;
     }
 
     public void setBlueValue(int blueValue) {

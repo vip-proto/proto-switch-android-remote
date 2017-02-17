@@ -263,6 +263,15 @@ public class Storage {
         storeGroupLight(context, groups);
     }
 
+    public static void deleteGroupLights(Context context, GroupLight groupLight) {
+        ArrayList<GroupLight> groups = loadGroupLights(context);
+        int indexOf = groups.indexOf(groupLight);
+        if (indexOf != -1) {
+            groups.remove(indexOf);
+            storeGroupLight(context, groups);
+        }
+    }
+
     public static ArrayList<GroupLight> loadGroupLights(Context context) {
         long start = System.currentTimeMillis();
         SharedPreferences sharedPref = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
@@ -304,5 +313,14 @@ public class Storage {
 
         Log.i(TAG, "loading time = " + (end - start) + "ms");
         return groups;
+    }
+
+    public static void deleteLight(Context context, LightDto deletedLight) {
+        ArrayList<Light> lights = loadLights(context);
+        int indexOf = lights.indexOf(deletedLight);
+        if (indexOf != -1) {
+            lights.remove(indexOf);
+            storeLights(context, lights);
+        }
     }
 }

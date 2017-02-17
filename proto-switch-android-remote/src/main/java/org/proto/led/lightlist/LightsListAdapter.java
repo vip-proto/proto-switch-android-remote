@@ -28,7 +28,9 @@
 package org.proto.led.lightlist;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,6 +105,14 @@ public class LightsListAdapter extends BaseAdapter implements DirectControlActiv
                 }
             }
         });
+        toggleButton.setLongClickable(true);
+        toggleButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showDeleteQuestion(light);
+                return true;
+            }
+        });
 
         if (light instanceof DimmableLightDto) {
             final DimmableLightDto dimmableLightDto = (DimmableLightDto) light;
@@ -154,6 +164,28 @@ public class LightsListAdapter extends BaseAdapter implements DirectControlActiv
         return vi;
     }
 
+    private void showDeleteQuestion(final LightDto light) {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        onDelete(light);
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage("Delete?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
+    }
+
+
     private void setColorOnButton(Button colorButton, int color) {
         GradientDrawable drawable = (GradientDrawable) colorButton.getBackground();
         drawable.setColor(color);
@@ -180,6 +212,10 @@ public class LightsListAdapter extends BaseAdapter implements DirectControlActiv
 
     public void onLiveUpdate(LightDto updatedLight) {
 
+
+    }
+
+    public void onDelete(LightDto deletedLight) {
 
     }
 

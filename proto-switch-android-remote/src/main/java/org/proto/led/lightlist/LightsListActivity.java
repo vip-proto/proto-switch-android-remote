@@ -168,6 +168,12 @@ public class LightsListActivity extends AppCompatActivity implements LightsListF
 
     }
 
+    @Override
+    public void onDeleteLight(LightDto deletedLight) {
+        Storage.deleteLight(this, deletedLight);
+        refreshListFromStorage();
+    }
+
     private void toast(String s) {
         Log.d(TAG, "toast: " + s);
 

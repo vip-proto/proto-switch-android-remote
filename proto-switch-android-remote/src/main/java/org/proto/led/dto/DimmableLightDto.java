@@ -49,4 +49,6 @@ public class DimmableLightDto extends LightDto {
     public int getCalculatedIntensity() {
         return intensity * (isOn() ? 1 : 0);
     }
+
+
 }

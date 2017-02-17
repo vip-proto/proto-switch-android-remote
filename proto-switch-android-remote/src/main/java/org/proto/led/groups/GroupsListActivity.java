@@ -101,4 +101,11 @@ public class GroupsListActivity extends AppCompatActivity implements LightsListF
         LightDto[] lightDtos = groupLight.getLights().toArray(new LightDto[groupLight.getLights().size()]);
         WifiController.setAllLights(this, lightDtos);
     }
+
+    @Override
+    public void onDeleteLight(LightDto deletedLight) {
+        GroupLight groupLight = (GroupLight) deletedLight;
+        Storage.deleteGroupLights(this, groupLight);
+        refreshListFromStorage();
+    }
 }

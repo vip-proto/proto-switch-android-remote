@@ -45,6 +45,20 @@ public class GroupRgbLightDto extends RgbLightDto implements GroupLight {
     @Override
     public void setLights(List<LightDto> lights) {
         this.lights = lights;
+        if (lights != null) {
+            int max = 0;
+            int color = 0;
+            for (Light light : lights) {
+                if (light instanceof RgbLightDto) {
+                    RgbLightDto rgbLightDto = (RgbLightDto) light;
+                    max = Math.max(max, rgbLightDto.getIntensity());
+                    color = rgbLightDto.calculateColor();
+                }
+            }
+            super.setOn(isOn());
+            super.setIntensity(max);
+            super.setColor(color);
+        }
     }
 
     @Override
@@ -90,5 +104,16 @@ public class GroupRgbLightDto extends RgbLightDto implements GroupLight {
         groupLightDto.setName(getName());
         groupLightDto.setLights(getLights());
         return groupLightDto;
+    }
+
+    @Override
+    public boolean isOn() {
+        boolean on = false;
+        if (lights != null) {
+            for (Light light : lights) {
+                on = on || light.isOn();
+            }
+        }
+        return on;
     }
 }
