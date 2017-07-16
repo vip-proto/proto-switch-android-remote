@@ -124,7 +124,7 @@ public class WiFiControllerService extends Service {
                 case 1: // ON/OFF
                     LightDto lightDto = new LightDto();
                     lightDto.setChannel(b[startOfLight + 32 + 1]);
-                    lightDto.setOn(b[startOfLight + 32 + 2] > 0);
+                    lightDto.setOn(b[startOfLight + 32 + 2] == 0);
                     parsedLight = lightDto;
                     startOfLight = startOfLight + 32 + 2 + 1;
                     break;

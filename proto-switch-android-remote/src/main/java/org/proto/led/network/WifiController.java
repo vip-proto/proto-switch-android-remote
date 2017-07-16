@@ -57,7 +57,7 @@ public class WifiController {
             DimmableLightDto dimmableLightDto = (DimmableLightDto) light;
             command[dimmableLightDto.getChannel() + 1] = (byte) dimmableLightDto.getCalculatedIntensity();
         } else if (light instanceof LightDto) {
-            command[light.getChannel() + 1] = (byte) (light.isOn() ? 63 : 0);
+            command[light.getChannel() + 1] = (byte) (light.isOn() ? 0 : 63);
 
         }
         String ip = light.getControllerDto().getIpAddress();
